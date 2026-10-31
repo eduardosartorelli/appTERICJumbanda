@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login — Gestão Axé (appTERICJumbanda)</title>
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --primary-green-dark: #1b5e20;
+            --accent-orange: #f57c00;
+            --bg-light: #f4f7f4;
+            --text-dark: #2c3e50;
+            --text-muted: #6c757d;
+            --border-color: #e0e0e0;
+            --danger-red: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-card h2 {
+            color: var(--primary-green-dark);
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-card input:focus {
+            border-color: var(--primary-green);
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .login-card button:hover {
+            background-color: #e65100;
+        }
+
+        .login-card button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #erro-login {
+            color: var(--danger-red);
+            margin-top: 15px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+    </style>
+
+    <!-- FIREBASE SDK v10 (AUTENTICAÇÃO) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEyLS8d6Vzjz-lY0BR36tsLGDKZ9HWO20",
+            authDomain: "apptericjumbanda.firebaseapp.com",
+            projectId: "apptericjumbanda",
+            storageBucket: "apptericjumbanda.firebasestorage.app",
+            messagingSenderId: "578304297292",
+            appId: "1:578304297292:web:35ecf4ca3448fa5a10a7e9",
+            measurementId: "G-FJFH7B5DMJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Se já estiver autenticado, redireciona para a página principal index.html
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "index.html";
+            }
+        });
+
+        window.fazerLoginFirebase = async function() {
+            const email = document.getElementById("email-input").value.trim();
+            const senha = document.getElementById("senha-input").value;
+            const erroEl = document.getElementById("erro-login");
+            const btnLogin = document.getElementById("btn-login");
+
+            if (!email || !senha) {
+                erroEl.textContent = "Por favor, preencha o e-mail e a senha.";
+                return;
+            }
+
+            try {
+                btnLogin.disabled = true;
+                btnLogin.textContent = "Autenticando...";
+                erroEl.textContent = "";
+
+                await signInWithEmailAndPassword(auth, email, senha);
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error("Erro no Login:", error);
+                btnLogin.disabled = false;
+                btnLogin.textContent = "Entrar";
+
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        erroEl.textContent = "Endereço de e-mail inválido.";
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                    case 'auth/invalid-credential':
+                        erroEl.textContent = "E-mail ou senha incorretos.";
+                        break;
+                    case 'auth/api-key-not-valid':
+                        erroEl.textContent = "Erro na chave do Firebase API. Verifique o console Firebase.";
+                        break;
+                    default:
+                        erroEl.textContent = "Falha no login: " + (error.message || error.code);
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const inputs = [document.getElementById("email-input"), document.getElementById("senha-input")];
+            inputs.forEach(input => {
+                input.addEventListener("keypress", (e) => {
+                    if (e.key === "Enter") {
+                        window.fazerLoginFirebase();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Gestão Axé</h2>
+        <p>Tenda Espírita Raio de Iansã e Cabocla Jupira</p>
+        
+        <div class="form-group">
+            <label for="email-input">E-mail</label>
+            <input type="email" id="email-input" placeholder="seu.email@exemplo.com" autocomplete="email">
+        </div>
+
+        <div class="form-group">
+            <label for="senha-input">Senha</label>
+            <input type="password" id="senha-input" placeholder="Digite sua senha" autocomplete="current-password">
+        </div>
+
+        <button id="btn-login" onclick="fazerLoginFirebase()">Entrar</button>
+        <div id="erro-login"></div>
+    </div>
+
+</body>
+</html>

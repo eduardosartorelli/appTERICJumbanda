@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gestão Axé — Tenda Espírita Raio de Iansã e Cabocla Jupira</title>
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --primary-green-light: #4caf50;
+            --primary-green-dark: #1b5e20;
+            --accent-orange: #f57c00;
+            --accent-orange-light: #ffb74d;
+            --bg-light: #f4f7f4;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-muted: #6c757d;
+            --border-color: #e0e0e0;
+            --danger-red: #d32f2f;
+            --warning-yellow: #fbc02d;
+            --success-green: #388e3c;
+            --shadow-soft: 0 4px 15px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+
+        #app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green));
+            color: white;
+            padding: 0.7rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .custom-logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .custom-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-title h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-title p {
+            font-size: 0.75rem;
+            opacity: 0.95;
+            color: var(--accent-orange-light);
+        }
+
+        .backup-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .cloud-badge {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            cursor: help;
+        }
+
+        .btn-header {
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        nav.desktop-nav {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 57px;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .nav-tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 12px 18px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-green);
+            border-bottom-color: var(--primary-green);
+            background: #f0f7f0;
+        }
+
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+            z-index: 1000;
+            justify-content: space-around;
+            padding: 6px 2px;
+        }
+
+        .mobile-nav-item {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 4px;
+            flex: 1;
+            transition: color 0.2s;
+        }
+
+        .mobile-nav-item span.icon {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary-green);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 12px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-hero {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            border-radius: 14px;
+            padding: 22px 18px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-hero::after {
+            content: "🌿";
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .welcome-text h2 {
+            font-size: 1.35rem;
+            margin-bottom: 6px;
+        }
+
+        .welcome-text p {
+            font-size: 0.88rem;
+            opacity: 0.9;
+        }
+
+        .quick-stats-hero {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-pill {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.25);
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e8eee8;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .app-card:active {
+            transform: scale(0.98);
+        }
+
+        .app-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: #f0f7f0;
+            color: var(--primary-green-dark);
+        }
+
+        .app-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green-dark);
+            margin-bottom: 4px;
+        }
+
+        .app-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+            margin-bottom: 15px;
+        }
+
+        .app-card-badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            background: #f4f4f4;
+            color: var(--text-dark);
+            align-self: flex-start;
+        }
+
+        .quick-actions-bar {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid #e8eee8;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 20px;
+        }
+
+        .quick-actions-bar h3 {
+            font-size: 0.95rem;
+            color: var(--primary-green-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .actions-flex {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 15px;
+            border: 1px solid #e8eee8;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            color: var(--primary-green-dark);
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e0efe0;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            padding: 11px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+        }
+
+        .btn {
+            padding: 11px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            min-height: 42px;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            min-height: 32px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background-color: var(--primary-green-dark);
+        }
+
+        .btn-orange {
+            background-color: var(--accent-orange);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary.active-filter {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #e8f5e9;
+            color: var(--primary-green-dark);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+        }
+
+        .badge-green { background-color: var(--success-green); }
+        .badge-orange { background-color: var(--accent-orange); }
+        .badge-red { background-color: var(--danger-red); }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .dash-card {
+            background: #f8faf8;
+            border: 1px solid #d8e6d8;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .dash-card .title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .dash-card .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green-dark);
+        }
+
+        .festa-item-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+
+        .festa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .festa-title-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-green-dark);
+        }
+
+        .gira-summary-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            gap: 10px;
+        }
+
+        .nav-mes-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f0f7f0;
+            border: 1px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .select-status-pago {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            cursor: pointer;
+            outline: none;
+            border: 1px solid #ccc;
+        }
+
+        .select-status-pago.pago {
+            background-color: #e8f5e9;
+            color: var(--success-green);
+            border-color: var(--success-green);
+        }
+
+        .select-status-pago.pendente {
+            background-color: #ffebee;
+            color: var(--danger-red);
+            border-color: var(--danger-red);
+        }
+
+        @media (max-width: 768px) {
+            nav.desktop-nav {
+                display: none !important;
+            }
+            .mobile-bottom-nav {
+                display: flex !important;
+            }
+            main {
+                margin: 12px auto;
+                padding: 0 8px;
+            }
+            .header-title h1 {
+                font-size: 1rem;
+            }
+            .header-title p {
+                font-size: 0.7rem;
+            }
+            .custom-logo {
+                width: 36px;
+                height: 36px;
+            }
+            .welcome-hero {
+                padding: 16px 14px;
+            }
+            .welcome-text h2 {
+                font-size: 1.15rem;
+            }
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <!-- FIREBASE SDK v10 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEyLS8d6Vzjz-lY0BR36tsLGDKZ9HWO20",
+            authDomain: "apptericjumbanda.firebaseapp.com",
+            projectId: "apptericjumbanda",
+            storageBucket: "apptericjumbanda.firebasestorage.app",
+            messagingSenderId: "578304297292",
+            appId: "1:578304297292:web:35ecf4ca3448fa5a10a7e9",
+            measurementId: "G-FJFH7B5DMJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.auth = auth;
+
+        // Proteção de Rota: se o usuário não estiver autenticado, manda de volta para o login.html
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                window.inicializarSistema();
+            }
+        });
+
+        window.fazerLogout = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = "login.html";
+            } catch (error) {
+                console.error("Erro ao sair:", error);
+            }
+        };
+
+        window.salvarEstadoNuvem = async function() {
+            try {
+                await setDoc(doc(db, "gestao_axe", "dados_gerais"), window.appState);
+            } catch (err) {
+                console.error("Erro ao sincronizar com Firebase: ", err);
+            }
+        };
+
+        window.iniciarEscutaNuvem = function() {
+            try {
+                onSnapshot(doc(db, "gestao_axe", "dados_gerais"), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const loaded = docSnap.data();
+                        window.appState = loaded;
+                        if (!window.appState.girasSemanais) window.appState.girasSemanais = [];
+                        if (!window.appState.filhos && loaded.filhas) window.appState.filhos = loaded.filhas;
+                        if (!window.appState.filhos) window.appState.filhos = [];
+                        if (!window.appState.consulentes) window.appState.consulentes = [];
+                        if (!window.appState.mensalidades) window.appState.mensalidades = {};
+                        if (!window.appState.estoque) window.appState.estoque = [];
+                        if (!window.appState.festas) window.appState.festas = [];
+                        if (!window.appState.cantinaVendas) window.appState.cantinaVendas = [];
+                    }
+                    
+                    if (!window.appState.filhos || window.appState.filhos.length === 0) {
+                        window.appState.filhos = window.FILHOS_INICIAIS.map((f, index) => ({
+                            id: Date.now() + index,
+                            nome: f.nome,
+                            tel: f.tel,
+                            aniversario: f.aniversario,
+                            valor: f.valor
+                        }));
+                        window.salvarEstadoNuvem();
+                    }
+
+                    window.renderAll();
+                }, (error) => {
+                    console.warn("Modo offline ativo (arquivos locais):", error);
+                    carregarModoLocal();
+                });
+            } catch (e) {
+                carregarModoLocal();
+            }
+        };
+
+        function carregarModoLocal() {
+            const saved = localStorage.getItem('gestao_axe_data');
+            if (saved) {
+                try {
+                    window.appState = JSON.parse(saved);
+                } catch(e) {}
+            }
+            if (!window.appState.filhos || window.appState.filhos.length === 0) {
+                window.appState.filhos = window.FILHOS_INICIAIS.map((f, index) => ({
+                    id: Date.now() + index,
+                    nome: f.nome,
+                    tel: f.tel,
+                    aniversario: f.aniversario,
+                    valor: f.valor
+                }));
+            }
+            window.renderAll();
+        }
+    </script>
+</head>
+<body>
+
+    <div id="app-container">
+        <header>
+            <div class="header-content">
+                <div class="logo-area" onclick="abrirAbaDireta('home')">
+                    <div class="custom-logo">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="42" fill="none" stroke="#2e7d32" stroke-width="7"/>
+                            <path d="M 52 18 L 28 50 L 46 50 L 40 82 L 72 44 L 52 44 Z" fill="#f57c00"/>
+                        </svg>
+                    </div>
+                    <div class="header-title">
+                        <h1>Gestão Axé</h1>
+                        <p>T.E. Raio de Iansã e Cabocla Jupira</p>
+                    </div>
+                </div>
+                <div class="backup-controls">
+                    <span class="cloud-badge" title="Nuvem Conectada">☁️</span>
+                    <button class="btn-header" onclick="exportData()" title="Salvar Backup">💾</button>
+                    <button class="btn-header" onclick="importData()" title="Abrir Backup">📂</button>
+                    <button class="btn-header" onclick="fazerLogout()" title="Sair do Sistema">🚪 Sair</button>
+                    <input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(event)">
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVEGAÇÃO DESKTOP / TABLET -->
+        <nav class="desktop-nav">
+            <div class="nav-tabs">
+                <button class="tab-btn active" id="tab-btn-home" onclick="switchTab(event, 'home')">🏠 Início</button>
+                <button class="tab-btn" id="tab-btn-giras" onclick="switchTab(event, 'giras')">📅 Giras</button>
+                <button class="tab-btn" id="tab-btn-filas" onclick="switchTab(event, 'filas')">📋 Visitantes</button>
+                <button class="tab-btn" id="tab-btn-festas" onclick="switchTab(event, 'festas')">🎉 Festas</button>
+                <button class="tab-btn" id="tab-btn-filhos" onclick="switchTab(event, 'filhos')">🌿 Filhos de Santo</button>
+                <button class="tab-btn" id="tab-btn-mensalidades" onclick="switchTab(event, 'mensalidades')">💰 Mensalidades</button>
+                <button class="tab-btn" id="tab-btn-estoque" onclick="switchTab(event, 'estoque')">📦 Estoque</button>
+                <button class="tab-btn" id="tab-btn-cantina" onclick="switchTab(event, 'cantina')">🥧 Cantina da Vó</button>
+            </div>
+        </nav>
+
+        <!-- NAVEGAÇÃO INFERIOR PARA DISPOSITIVOS MÓVEIS -->
+        <div class="mobile-bottom-nav">
+            <button class="mobile-nav-item active" id="mob-btn-home" onclick="abrirAbaDireta('home')">
+                <span class="icon">🏠</span>Início
+            </button>
+            <button class="mobile-nav-item" id="mob-btn-giras" onclick="abrirAbaDireta('giras')">
+                <span class="icon">📅</span>Giras
+            </button>
+            <button class="mobile-nav-item" id="mob-btn-filas" onclick="abrirAbaDireta('filas')">
+                <span class="icon">📋</span>Visitantes
+            </button>
+            <button class="mobile-nav-item" id="mob-btn-filhos" onclick="abrirAbaDireta('filhos')">
+                <span class="icon">🌿</span>Corrente
+            </button>
+            <button class="mobile-nav-item" id="mob-btn-mensalidades" onclick="abrirAbaDireta('mensalidades')">
+                <span class="icon">💰</span>Financeiro
+            </button>
+            <button class="mobile-nav-item" id="mob-btn-cantina" onclick="abrirAbaDireta('cantina')">
+                <span class="icon">🥧</span>Cantina
+            </button>
+        </div>
+
+        <main>
+            <!-- ABA INICIAL: DASHBOARD -->
+            <div id="home" class="tab-content active">
+                <div class="welcome-hero">
+                    <div class="welcome-text">
+                        <h2>Que o Axé abençoe nossos trabalhos! 🙏</h2>
+                        <p>Painel de Gestão Integrada do Terreiro</p>
+                    </div>
+                    <div class="quick-stats-hero">
+                        <div class="hero-pill">
+                            <span>☁️ Nuvem Ativa</span>
+                        </div>
+                        <div class="hero-pill">
+                            <span>👥 <strong id="lblTotalFilhosHome">0</strong> Filhos na Corrente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-grid">
+                    <div class="app-card" onclick="abrirAbaDireta('giras')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">📅</div>
+                                <span class="app-card-badge" id="cardBadgeGiras">0 Giras</span>
+                            </div>
+                            <div class="app-card-title">Giras</div>
+                            <div class="app-card-desc">Consulte a programação, agende novos trabalhos e controle o calendário da casa.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('filas')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">📋</div>
+                                <span class="app-card-badge" id="cardBadgeVisitantes">0 Visitantes</span>
+                            </div>
+                            <div class="app-card-title">Lista de Visitantes</div>
+                            <div class="app-card-desc">Acompanhe a chegada e registe a presença dos consulentes nas giras da semana.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('festas')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">🎉</div>
+                                <span class="app-card-badge" id="cardBadgeFestas">0 Eventos</span>
+                            </div>
+                            <div class="app-card-title">Festas e Homenagens</div>
+                            <div class="app-card-desc">Planeamento de grandes festas, listas de convidados e balanço financeiro dos eventos.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('filhos')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">🌿</div>
+                                <span class="app-card-badge" id="cardBadgeFilhos">0 Membros</span>
+                            </div>
+                            <div class="app-card-title">Filhos de Santo</div>
+                            <div class="app-card-desc">Cadastro completo da corrente, contactos, datas de aniversário e valores de mensalidade.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('mensalidades')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">💰</div>
+                                <span class="app-card-badge" id="cardBadgeMensalidades">R$ 0,00</span>
+                            </div>
+                            <div class="app-card-title">Mensalidades</div>
+                            <div class="app-card-desc">Gestão financeira do terreiro, mensalidades integradas com o consumo da cantina.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('estoque')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">📦</div>
+                                <span class="app-card-badge" id="cardBadgeEstoque">0 Itens</span>
+                            </div>
+                            <div class="app-card-title">Estoque de Materiais</div>
+                            <div class="app-card-desc">Controlo de insumos da casa: velas, bebidas, louças e artigos para os rituais.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+
+                    <div class="app-card" onclick="abrirAbaDireta('cantina')">
+                        <div>
+                            <div class="app-card-top">
+                                <div class="app-icon">🥧</div>
+                                <span class="app-card-badge" id="cardBadgeCantina">R$ 0,00</span>
+                            </div>
+                            <div class="app-card-title">Cantina da Vó</div>
+                            <div class="app-card-desc">Registo de vendas para filhos e consulentes, pagamentos à vista ou fiado.</div>
+                        </div>
+                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
+                    </div>
+                </div>
+
+                <div class="quick-actions-bar">
+                    <h3>⚡ Atalhos Rápidos</h3>
+                    <div class="actions-flex">
+                        <button class="btn btn-primary" onclick="abrirAbaDireta('giras')">➕ Cadastrar Gira</button>
+                        <button class="btn btn-orange" onclick="abrirAbaDireta('filas')">✍️ Registar Presença</button>
+                        <button class="btn btn-primary" onclick="abrirAbaDireta('cantina')">🛒 Registar Venda</button>
+                        <button class="btn btn-secondary" onclick="abrirAbaDireta('filhos')">👤 Novo Filho de Santo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 0: GIRAS -->
+            <div id="giras" class="tab-content">
+                <div class="card">
+                    <div class="card-title">Adicionar Gira</div>
+                    <form id="formGira" class="form-grid" onsubmit="adicionarGiraSemanal(event)">
+                        <div class="form-group">
+                            <label>Nome / Linha da Gira</label>
+                            <input type="text" id="giraNome" class="form-control" required placeholder="Ex: Gira de Preto Velho / Gira de Baianos">
+                        </div>
+                        <div class="form-group">
+                            <label>Data da Gira</label>
+                            <input type="date" id="giraData" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Horário de Início</label>
+                            <input type="time" id="giraHora" class="form-control" value="20:00">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">➕ Cadastrar Gira</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Calendário e Programação de Giras</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Gira / Linha</th>
+                                    <th>Presentes Registrados</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblGirasSemanais"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 1: LISTA DE VISITANTES DA GIRA -->
+            <div id="filas" class="tab-content">
+                <div class="card">
+                    <div class="card-title">
+                        <span>Lista de Visitantes</span>
+                    </div>
+                    <form id="formConsulente" class="form-grid" onsubmit="adicionarConsulente(event)">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Selecione a Gira *</label>
+                            <select id="cGiraId" class="form-control" required onchange="aoMudarGiraPresenca()">
+                                <option value="">-- Selecione uma Gira Cadastrada --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome do Visitante *</label>
+                            <input type="text" id="cNome" class="form-control" required placeholder="Ex: Maria da Silva">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="text" id="cTel" class="form-control" placeholder="(11) 99999-9999" inputmode="tel">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">✍️ Registrar Presença</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span>Livro de Visitas — <strong id="lblGiraSelecionadaNome">Selecione uma Gira acima</strong></span>
+                        <span id="badgeTotalGira" class="badge badge-green" style="font-size: 0.9rem;">0 Pessoas Presentes</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome do Visitante</th>
+                                    <th>Telefone</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblPresencaGira"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 Histórico e Resumo de Presenças por Gira</div>
+                    <div id="historicoGirasContainer"></div>
+                </div>
+            </div>
+
+            <!-- ABA 2: FESTAS & EVENTOS -->
+            <div id="festas" class="tab-content">
+                <div class="card">
+                    <div class="card-title">Nova Festa</div>
+                    <form id="formFesta" class="form-grid" onsubmit="adicionarFesta(event)">
+                        <div class="form-group">
+                            <label>Nome da Festa / Evento</label>
+                            <input type="text" id="festaNome" class="form-control" required placeholder="Ex: Festa de Cosme e Damião">
+                        </div>
+                        <div class="form-group">
+                            <label>Orixá / Entidade Homenageada</label>
+                            <input type="text" id="festaOrixa" class="form-control" placeholder="Ex: Erês / Iansã / Ciganos">
+                        </div>
+                        <div class="form-group">
+                            <label>Data Prevista</label>
+                            <input type="date" id="festaData" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Horário</label>
+                            <input type="time" id="festaHora" class="form-control" value="18:00">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">🎉 Cadastrar Festa</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Resumo Financeiro dos Eventos</div>
+                    <div class="dashboard-grid">
+                        <div class="dash-card">
+                            <div class="title">Total Arrecadado (Presenças)</div>
+                            <div class="value" id="dashFestaArrecadado" style="color: var(--accent-orange);">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Despesas Realizadas</div>
+                            <div class="value" id="dashFestaCustos" style="color: var(--danger-red);">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Saldo Geral dos Eventos</div>
+                            <div class="value" id="dashFestaSaldo">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span>📋 Lista de Presença da Festa</span>
+                    </div>
+                    <form id="formPresencaFesta" class="form-grid" onsubmit="adicionarPresencaFesta(event)">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Selecione a Festa *</label>
+                            <select id="pfFestaId" class="form-control" required onchange="renderFestas()">
+                                <option value="">-- Selecione uma Festa Cadastrada --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input type="text" id="pfNome" class="form-control" required placeholder="Ex: Ana Maria">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="text" id="pfTel" class="form-control" placeholder="(11) 99999-9999" inputmode="tel">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">✍️ Confirmar Presença</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Festas e Homenagens Agendadas</div>
+                    <div id="listaFestasContainer"></div>
+                </div>
+            </div>
+
+            <!-- ABA 3: FILHOS DE SANTO -->
+            <div id="filhos" class="tab-content">
+                <div class="card">
+                    <div class="card-title" id="tituloFormFilho">Cadastrar Filho de Santo</div>
+                    <form id="formFilho" class="form-grid" onsubmit="salvarFilho(event)">
+                        <input type="hidden" id="fIdEdit">
+                        <div class="form-group">
+                            <label>Nome Completo</label>
+                            <input type="text" id="fNome" class="form-control" required placeholder="Ex: João de Ogum">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="text" id="fTel" class="form-control" placeholder="(11) 99999-9999" inputmode="tel">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Aniversário</label>
+                            <input type="date" id="fAniversario" class="form-control">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end; gap: 8px; flex-direction: row; align-items: flex-end;">
+                            <button type="button" id="btnCancelarEditFilho" class="btn btn-secondary" onclick="cancelarEdicaoFilho()" style="display:none;">Cancelar</button>
+                            <button type="submit" id="btnSalvarFilho" class="btn btn-primary">Cadastrar Filho</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Corrente da Casa</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Aniversário</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblFilhos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 4: MENSALIDADES -->
+            <div id="mensalidades" class="tab-content">
+                <div class="card">
+                    <div class="card-title">
+                        <span>Controle Financeiro da Corrente</span>
+                        <button class="btn btn-orange btn-sm" onclick="irParaMesAtual()">📅 Ir para Mês Vigente</button>
+                    </div>
+
+                    <div class="nav-mes-bar">
+                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(-1)">◀ Mês Anterior</button>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 0.85rem; font-weight: 600;">Selecione o Mês / Ano:</label>
+                            <input type="month" id="mesRefSelect" class="form-control" style="width: auto; padding: 6px 12px; font-weight: bold;" onchange="aoMudarMesSelect()">
+                        </div>
+
+                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(1)">Próximo Mês ▶</button>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dash-card">
+                            <div class="title">Total Previsto (<span id="lblMesSelecionadoNome">Mês Vigente</span>)</div>
+                            <div class="value" id="dashMensalidadePrevisto">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Total Arrecadado / Pago</div>
+                            <div class="value" id="dashMensalidadeRecebido" style="color: var(--success-green);">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Total Pendente</div>
+                            <div class="value" id="dashMensalidadePendente" style="color: var(--danger-red);">R$ 0,00</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <h4 style="color: var(--primary-green-dark); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>📋 Lista Geral de Mensalidades dos Filhos de Santo</span>
+                        </h4>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Filho de Santo</th>
+                                        <th>Telefone</th>
+                                        <th>Mensalidade (R$)</th>
+                                        <th>Cantina da Vó</th>
+                                        <th>Total a Pagar</th>
+                                        <th>Status do Pagamento</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblMensalidadesUnificada"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 5: ESTOQUE -->
+            <div id="estoque" class="tab-content">
+                <div class="card">
+                    <div class="card-title">Novo Item no Estoque</div>
+                    <form id="formEstoque" class="form-grid" onsubmit="adicionarItemEstoque(event)">
+                        <div class="form-group">
+                            <label>Nome do Insumo</label>
+                            <input type="text" id="eNome" class="form-control" required placeholder="Ex: Vela Branca / Guaraná">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria *</label>
+                            <select id="eCategoria" class="form-control" required>
+                                <option value="Bebidas">Bebidas</option>
+                                <option value="Louças">Louças</option>
+                                <option value="Velas">Velas</option>
+                                <option value="Outros" selected>Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Qtd. Atual</label>
+                            <input type="number" id="eQtd" class="form-control" required value="10" min="0" inputmode="numeric">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">Salvar Item</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span>Itens e Materiais do Terreiro</span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <button class="btn btn-secondary btn-sm active-filter" onclick="filtrarEstoque('Todos', this)">Todos</button>
+                        <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Bebidas', this)">🍹 Bebidas</button>
+                        <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Louças', this)">🍽️ Louças</button>
+                        <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Velas', this)">🕯️ Velas</button>
+                        <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Outros', this)">📦 Outros</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Categoria</th>
+                                    <th>Qtd. Atual</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblEstoque"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 6: CANTINA DA VÓ -->
+            <div id="cantina" class="tab-content">
+                <div class="card">
+                    <div class="card-title">🥧 Registrar Venda na Cantina</div>
+                    <form id="formCantina" class="form-grid" onsubmit="registrarVendaCantina(event)">
+                        <div class="form-group">
+                            <label>Tipo de Comprador *</label>
+                            <select id="cantinaTipoComprador" class="form-control" required onchange="mudarTipoCompradorCantina()">
+                                <option value="Filho">Filho de Santo</option>
+                                <option value="Consulente">Consulente / Visitante</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="grupoFilhoSelect">
+                            <label>Selecione o Filho de Santo *</label>
+                            <select id="cantinaFilhoId" class="form-control">
+                                <option value="">-- Selecione o Filho --</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="grupoConsulenteInput" style="display:none;">
+                            <label>Nome do Consulente *</label>
+                            <input type="text" id="cantinaNomeConsulente" class="form-control" placeholder="Nome do comprador">
+                        </div>
+                        <div class="form-group">
+                            <label>Produto *</label>
+                            <select id="cantinaProduto" class="form-control" required onchange="atualizarPrecoProdutoCantina()">
+                                <option value="">-- Selecione o Produto --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantidade *</label>
+                            <input type="number" id="cantinaQtd" class="form-control" value="1" min="1" required onchange="atualizarPrecoProdutoCantina()" inputmode="numeric">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor Total (R$)</label>
+                            <input type="text" id="cantinaValorTotal" class="form-control" readonly style="background-color: #f0f0f0; font-weight: bold;">
+                        </div>
+                        <div class="form-group">
+                            <label>Forma de Pagamento *</label>
+                            <select id="cantinaStatusPgto" class="form-control" required>
+                                <option value="Pago">✅ Pago (À Vista)</option>
+                                <option value="Fiado">⏳ Fiado (Pendente)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end; grid-column: span 2;">
+                            <button type="submit" class="btn btn-primary">🛒 Registrar Venda</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 Resumo Financeiro da Cantina</div>
+                    <div class="dashboard-grid">
+                        <div class="dash-card">
+                            <div class="title">Total Recebido (Pago)</div>
+                            <div class="value" id="dashCantinaRecebido" style="color: var(--success-green);">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Total Fiado (Pendente)</div>
+                            <div class="value" id="dashCantinaFiado" style="color: var(--danger-red);">R$ 0,00</div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="title">Faturamento Total</div>
+                            <div class="value" id="dashCantinaTotal">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📋 Histórico de Vendas da Cantina</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Comprador</th>
+                                    <th>Produto</th>
+                                    <th>Qtd</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblCantinaVendas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        window.FILHOS_INICIAIS = [
+            { nome: "Eduardo Sartorelli", tel: "11949744590", aniversario: "10/abr", valor: 120 },
+            { nome: "Ca Bagueixe", tel: "11994146105", aniversario: "05/jan", valor: 50 },
+            { nome: "Mãe Glê", tel: "11980824567", aniversario: "17/fev", valor: 50 },
+            { nome: "Evilyn", tel: "11951065873", aniversario: "21/fev", valor: 50 },
+            { nome: "Julia Siewerdt", tel: "11994515588", aniversario: "03/mar", valor: 50 },
+            { nome: "Luizinho Henrique", tel: "11983990469", aniversario: "08/mar", valor: 50 },
+            { nome: "Irene Baptista", tel: "11971237479", aniversario: "18/mar", valor: 50 },
+            { nome: "Tati Sartorelli", tel: "11971845613", aniversario: "21/mar", valor: 50 },
+            { nome: "Waltinho Oliveira", tel: "11966598366", aniversario: "31/mar", valor: 50 },
+            { nome: "Maikon Douglas", tel: "11967116836", aniversario: "27/abr", valor: 50 },
+            { nome: "Henrique Damião", tel: "11963394133", aniversario: "16/mai", valor: 50 },
+            { nome: "Alexandra Costa", tel: "11973442305", aniversario: "23/mai", valor: 50 },
+            { nome: "Renata Moresco", tel: "11932586280", aniversario: "06/jun", valor: 50 },
+            { nome: "Denise Koszegi", tel: "11971130970", aniversario: "11/jun", valor: 50 },
+            { nome: "Beatriz Biazon", tel: "11940794640", aniversario: "18/jun", valor: 50 },
+            { nome: "Luiza Esteves", tel: "11953611849", aniversario: "23/jun", valor: 50 },
+            { nome: "Diogo Alexandre", tel: "11920855911", aniversario: "27/jun", valor: 50 },
+            { nome: "Isabella Esteves", tel: "11965829888", aniversario: "27/jul", valor: 50 },
+            { nome: "Isabely Galhardo", tel: "11966665759", aniversario: "01/ago", valor: 50 },
+            { nome: "Gi Requena", tel: "11922023915", aniversario: "04/ago", valor: 50 },
+            { nome: "Lucia Bagueixe", tel: "11994249000", aniversario: "04/ago", valor: 50 },
+            { nome: "Bella Bossio", tel: "11993106648", aniversario: "10/ago", valor: 50 },
+            { nome: "Deise Biazon", tel: "11965006242", aniversario: "11/ago", valor: 50 },
+            { nome: "Pai Edson", tel: "11967091578", aniversario: "08/set", valor: 50 },
+            { nome: "Andreia Dona Sandra", tel: "11994846757", aniversario: "28/set", valor: 50 },
+            { nome: "Thais Costa", tel: "11983565356", aniversario: "30/set", valor: 50 },
+            { nome: "Leticia Gomes", tel: "11968361946", aniversario: "03/out", valor: 50 },
+            { nome: "Laiane Santos", tel: "11920857986", aniversario: "07/nov", valor: 50 },
+            { nome: "Schantelli Siewerdt", tel: "11969917858", aniversario: "25/dez", valor: 50 },
+            { nome: "Vic", tel: "11963136707", aniversario: "27/dez", valor: 50 },
+            { nome: "Cre Cecilio", tel: "11939206290", aniversario: "27/dez", valor: 50 },
+            { nome: "Nara", tel: "11933694592", aniversario: "28/dez", valor: 50 }
+        ].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+        const PRODUTOS_CANTINA = [
+            { nome: "Salgado", preco: 12.00 },
+            { nome: "Refrigerante", preco: 8.00 },
+            { nome: "Moranguete", preco: 2.00 },
+            { nome: "Chiclete", preco: 3.50 },
+            { nome: "Pirulito", preco: 1.00 },
+            { nome: "Paçoca", preco: 3.50 },
+            { nome: "Salgadinho Fofura", preco: 3.00 },
+            { nome: "Salgadinho Torcida", preco: 3.00 },
+            { nome: "Pipoca Doce", preco: 5.00 },
+            { nome: "Banhos", preco: 7.00 },
+            { nome: "Guias", preco: 10.00 },
+            { nome: "Imagens", preco: 30.00 },
+            { nome: "Alfazema liquida", preco: 18.00 },
+            { nome: "Alfazema em pó", preco: 20.00 },
+            { nome: "Vela 7 dias", preco: 10.00 },
+            { nome: "Vela Palito", preco: 2.50 },
+            { nome: "Incenso", preco: 3.50 },
+            { nome: "Incenso Tablete", preco: 15.00 }
+        ];
+
+        window.appState = {
+            girasSemanais: [], 
+            filhos: [],
+            consulentes: [], 
+            mensalidades: {}, 
+            estoque: [],
+            festas: [],
+            cantinaVendas: []
+        };
+
+        let filtroEstoqueCategoria = 'Todos';
+
+        const NOMES_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const MESES_ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+        window.inicializarSistema = function() {
+            if (window.iniciarEscutaNuvem) {
+                window.iniciarEscutaNuvem();
+            }
+
+            irParaMesAtual();
+            document.getElementById('giraData').value = new Date().toISOString().substring(0,10);
+            popularSelectProdutosCantina();
+            
+            renderAll();
+            verificarAniversariantesDoDia();
+        };
+
+        let debounceTimer = null;
+        function saveData() {
+            if (window.salvarEstadoNuvem) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    window.salvarEstadoNuvem();
+                }, 300);
+            } else {
+                localStorage.setItem('gestao_axe_data', JSON.stringify(appState));
+            }
+            renderAll();
+        }
+
+        function renderAll() {
+            renderHomeBadges();
+            renderGirasSemanais();
+            popularSelectGiras();
+            renderConsulentes();
+            popularSelectFestas();
+            renderFestas();
+            renderFilhos();
+            renderMensalidades();
+            renderEstoque();
+            popularSelectFilhosCantina();
+            renderCantina();
+        }
+
+        function abrirAbaDireta(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (targetBtn) targetBtn.classList.add('active');
+
+            const mobBtn = document.getElementById(`mob-btn-${tabId}`);
+            if (mobBtn) mobBtn.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchTab(evt, tabId) {
+            abrirAbaDireta(tabId);
+        }
+
+        function verificarAniversariantesDoDia() {
+            const hoje = new Date();
+            const diaHoje = hoje.getDate();
+            const mesHojeIdx = hoje.getMonth();
+
+            const aniversariantes = appState.filhos.filter(f => {
+                if (!f.aniversario) return false;
+                
+                const str = f.aniversario.trim().toLowerCase();
+                if (str.includes('/')) {
+                    const partes = str.split('/');
+                    const d = parseInt(partes[0]);
+                    const mStr = partes[1];
+                    let m = -1;
+                    if (!isNaN(mStr)) {
+                        m = parseInt(mStr) - 1;
+                    } else {
+                        m = MESES_ABREV.indexOf(mStr.substring(0,3));
+                    }
+                    return (d === diaHoje && m === mesHojeIdx);
+                } else if (str.includes('-')) {
+                    const partes = str.split('-');
+                    if (partes.length === 3) {
+                        const d = parseInt(partes[2]);
+                        const m = parseInt(partes[1]) - 1;
+                        return (d === diaHoje && m === mesHojeIdx);
+                    }
+                }
+                return false;
+            });
+
+            if (aniversariantes.length > 0) {
+                const nomes = aniversariantes.map(a => a.nome).join(', ');
+                alert(`🎉 🎂 LEMBRETE DE ANIVERSÁRIO! 🎂 🎉\n\nHoje é aniversário do(a) filho(a) de santo:\n👉 ${nomes}\n\nDesejamos muito Axé, saúde e luz! ✨🌿`);
+            }
+        }
+
+        function renderHomeBadges() {
+            document.getElementById('lblTotalFilhosHome').innerText = appState.filhos.length;
+            document.getElementById('cardBadgeGiras').innerText = `${appState.girasSemanais.length} Giras`;
+            document.getElementById('cardBadgeVisitantes').innerText = `${appState.consulentes.length} Registros`;
+            document.getElementById('cardBadgeFestas').innerText = `${appState.festas.length} Eventos`;
+            document.getElementById('cardBadgeFilhos').innerText = `${appState.filhos.length} Filhos`;
+            
+            const totalCantina = (appState.cantinaVendas || []).reduce((sum, v) => sum + (v.total || 0), 0);
+            document.getElementById('cardBadgeCantina').innerText = `R$ ${totalCantina.toFixed(2)}`;
+
+            const estoqueTotal = (appState.estoque || []).reduce((sum, i) => sum + (i.qtd || 0), 0);
+            document.getElementById('cardBadgeEstoque').innerText = `${estoqueTotal} itens`;
+
+            const totalPrevistoMensal = appState.filhos.reduce((sum, f) => sum + (f.valor || 50), 0);
+            document.getElementById('cardBadgeMensalidades').innerText = `R$ ${totalPrevistoMensal.toFixed(2)}/mês`;
+        }
+
+        /* --- LÓGICA: GIRAS --- */
+        function adicionarGiraSemanal(e) {
+            e.preventDefault();
+            const nome = document.getElementById('giraNome').value;
+            const data = document.getElementById('giraData').value;
+            const hora = document.getElementById('giraHora').value;
+
+            const novaGira = {
+                id: Date.now(),
+                nome: nome,
+                data: data,
+                hora: hora,
+                obs: ''
+            };
+
+            appState.girasSemanais.push(novaGira);
+
+            document.getElementById('giraNome').value = '';
+            saveData();
+            
+            document.getElementById('cGiraId').value = novaGira.id;
+            renderConsulentes();
+        }
+
+        function removerGiraSemanal(id) {
+            if(confirm("Tem certeza que deseja remover esta gira? Os registros de presença vinculados a ela serão mantidos.")) {
+                appState.girasSemanais = appState.girasSemanais.filter(g => g.id !== id);
+                saveData();
+            }
+        }
+
+        function renderGirasSemanais() {
+            const tbody = document.getElementById('tblGirasSemanais');
+            tbody.innerHTML = '';
+
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+
+            if(girasOrdenadas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhuma gira cadastrada. Agende a primeira gira no formulário acima!</td></tr>';
+                return;
+            }
+
+            girasOrdenadas.forEach(gira => {
+                const dataFmt = gira.data ? gira.data.split('-').reverse().join('/') : '--/--/----';
+                const totalPresentes = appState.consulentes.filter(c => c.giraId == gira.id).length;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${dataFmt}</strong></td>
+                        <td>${gira.hora || '--:--'}</td>
+                        <td><strong>${gira.nome}</strong></td>
+                        <td><span class="badge badge-green">${totalPresentes} Pessoas</span></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removerGiraSemanal(${gira.id})">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function irParaPresencaGira(giraId) {
+            abrirAbaDireta('filas');
+            document.getElementById('cGiraId').value = giraId;
+            renderConsulentes();
+        }
+
+        function popularSelectGiras() {
+            const select = document.getElementById('cGiraId');
+            const valAtual = select.value;
+            select.innerHTML = '<option value="">-- Selecione uma Gira Cadastrada --</option>';
+
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+
+            girasOrdenadas.forEach(g => {
+                const dataFmt = g.data ? g.data.split('-').reverse().join('/') : '';
+                select.innerHTML += `<option value="${g.id}">${dataFmt} — ${g.nome} (${g.hora || ''})</option>`;
+            });
+
+            if(valAtual && appState.girasSemanais.some(g => g.id == valAtual)) {
+                select.value = valAtual;
+            } else if(girasOrdenadas.length > 0) {
+                select.value = girasOrdenadas[0].id;
+            }
+        }
+
+        /* --- LÓGICA: LISTA DE VISITANTES --- */
+        function aoMudarGiraPresenca() {
+            renderConsulentes();
+        }
+
+        function adicionarConsulente(e) {
+            e.preventDefault();
+            const giraId = document.getElementById('cGiraId').value;
+            if(!giraId) {
+                alert("Por favor, selecione uma Gira no menu suspenso!");
+                return;
+            }
+
+            const nome = document.getElementById('cNome').value;
+            const tel = document.getElementById('cTel').value;
+            
+            appState.consulentes.push({
+                id: Date.now(),
+                giraId: giraId,
+                nome: nome,
+                tel: tel
+            });
+
+            document.getElementById('cNome').value = '';
+            document.getElementById('cTel').value = '';
+            saveData();
+        }
+
+        function removerConsulente(id) {
+            if(confirm("Remover este visitante da lista de presenças?")) {
+                appState.consulentes = appState.consulentes.filter(x => x.id !== id);
+                saveData();
+            }
+        }
+
+        function renderConsulentes() {
+            const giraId = document.getElementById('cGiraId').value;
+            const tbody = document.getElementById('tblPresencaGira');
+            tbody.innerHTML = '';
+
+            const giraAtual = appState.girasSemanais.find(g => g.id == giraId);
+
+            if (giraAtual) {
+                const dataFmt = giraAtual.data ? giraAtual.data.split('-').reverse().join('/') : '';
+                document.getElementById('lblGiraSelecionadaNome').innerText = `${giraAtual.nome} (${dataFmt})`;
+            } else {
+                document.getElementById('lblGiraSelecionadaNome').innerText = 'Nenhuma Gira Selecionada';
+            }
+
+            const visitantesDaGira = appState.consulentes.filter(c => c.giraId == giraId);
+
+            if(visitantesDaGira.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum visitante registrado para esta gira ainda.</td></tr>';
+            } else {
+                visitantesDaGira.forEach((c, idx) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${idx + 1}</strong></td>
+                            <td>${c.nome}</td>
+                            <td>${c.tel || '-'}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="removerConsulente(${c.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('badgeTotalGira').innerText = `${visitantesDaGira.length} Pessoas Presentes`;
+
+            const historicoContainer = document.getElementById('historicoGirasContainer');
+            historicoContainer.innerHTML = '';
+
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+
+            if(girasOrdenadas.length === 0) {
+                historicoContainer.innerHTML = '<p style="color: var(--text-muted); font-size:0.9rem;">Cadastre as giras da casa na aba "Giras".</p>';
+            }
+
+            girasOrdenadas.forEach(gira => {
+                const dataFmt = gira.data ? gira.data.split('-').reverse().join('/') : '';
+                const total = appState.consulentes.filter(c => c.giraId == gira.id).length;
+                const ativa = (gira.id == giraId);
+
+                historicoContainer.innerHTML += `
+                    <div class="gira-summary-card" style="${ativa ? 'border-left: 4px solid var(--primary-green); background:#f0f7f0;' : ''}">
+                        <div>
+                            <strong>${gira.nome} — ${dataFmt}</strong>
+                            <div style="font-size:0.8rem; color: var(--text-muted);">${total} ${total === 1 ? 'pessoa' : 'pessoas'}</div>
+                        </div>
+                        <button class="btn ${ativa ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="irParaPresencaGira(${gira.id})">
+                            ${ativa ? '✓ Atual' : 'Ver'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        /* --- LÓGICA: FESTAS & EVENTOS --- */
+        function adicionarFesta(e) {
+            e.preventDefault();
+            const nome = document.getElementById('festaNome').value;
+            const orixa = document.getElementById('festaOrixa').value;
+            const data = document.getElementById('festaData').value;
+            const hora = document.getElementById('festaHora').value;
+
+            const novaFesta = {
+                id: Date.now(),
+                nome: nome,
+                orixa: orixa,
+                data: data,
+                hora: hora,
+                lancamentos: [],
+                presencas: []
+            };
+
+            appState.festas.push(novaFesta);
+
+            document.getElementById('festaNome').value = '';
+            document.getElementById('festaOrixa').value = '';
+            saveData();
+            
+            document.getElementById('pfFestaId').value = novaFesta.id;
+            renderFestas();
+        }
+
+        function removerFesta(id) {
+            if(confirm("Deseja mesmo remover esta festa e todo seu histórico financeiro e de presença?")) {
+                appState.festas = appState.festas.filter(x => x.id !== id);
+                saveData();
+            }
+        }
+
+        function popularSelectFestas() {
+            const select = document.getElementById('pfFestaId');
+            if(!select) return;
+            const valAtual = select.value;
+            select.innerHTML = '<option value="">-- Selecione uma Festa Cadastrada --</option>';
+
+            const festasOrdenadas = [...appState.festas].sort((a,b) => (b.data || '').localeCompare(a.data || ''));
+
+            festasOrdenadas.forEach(f => {
+                const dataFmt = f.data ? f.data.split('-').reverse().join('/') : 'Data a definir';
+                select.innerHTML += `<option value="${f.id}">${f.nome} (${dataFmt})</option>`;
+            });
+
+            if(valAtual && appState.festas.some(f => f.id == valAtual)) {
+                select.value = valAtual;
+            } else if(festasOrdenadas.length > 0) {
+                select.value = festasOrdenadas[0].id;
+            }
+        }
+
+        function adicionarPresencaFesta(e) {
+            e.preventDefault();
+            const festaId = document.getElementById('pfFestaId').value;
+            if(!festaId) {
+                alert("Selecione uma festa para registrar a presença!");
+                return;
+            }
+
+            const nome = document.getElementById('pfNome').value;
+            const tel = document.getElementById('pfTel').value;
+
+            const festa = appState.festas.find(f => f.id == festaId);
+            if(festa) {
+                if(!festa.presencas) festa.presencas = [];
+                festa.presencas.push({
+                    id: Date.now(),
+                    nome: nome,
+                    tel: tel
+                });
+                
+                document.getElementById('pfNome').value = '';
+                document.getElementById('pfTel').value = '';
+                saveData();
+            }
+        }
+
+        function removerPresencaFesta(festaId, presencaId) {
+            const festa = appState.festas.find(f => f.id == festaId);
+            if(festa && festa.presencas) {
+                festa.presencas = festa.presencas.filter(p => p.id !== presencaId);
+                saveData();
+            }
+        }
+
+        function adicionarDespesaFesta(festaId) {
+            const desc = prompt("Descrição da despesa (ex: Compra de Flores, Gelo):");
+            if (!desc) return;
+            const valor = parseFloat(prompt("Valor (R$):", "0.00")) || 0;
+
+            const festa = appState.festas.find(f => f.id === festaId);
+            if(festa) {
+                if(!festa.lancamentos) festa.lancamentos = [];
+                festa.lancamentos.push({
+                    id: Date.now(),
+                    desc: desc,
+                    valor: valor,
+                    tipo: 'Despesa'
+                });
+                saveData();
+            }
+        }
+
+        function removerLancamentoFesta(festaId, lancId) {
+            const festa = appState.festas.find(f => f.id === festaId);
+            if(festa && festa.lancamentos) {
+                festa.lancamentos = festa.lancamentos.filter(l => l.id !== lancId);
+                saveData();
+            }
+        }
+
+        function renderFestas() {
+            popularSelectFestas();
+            const container = document.getElementById('listaFestasContainer');
+            container.innerHTML = '';
+
+            let totalArrecadado = 0;
+            let totalCustos = 0;
+
+            if (appState.festas.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 15px;">Nenhuma festa cadastrada no momento.</p>';
+            }
+
+            appState.festas.forEach(festa => {
+                let arrecadado = (festa.presencas || []).length * 35.00;
+                let despesas = 0;
+
+                (festa.lancamentos || []).forEach(l => {
+                    despesas += l.valor;
+                });
+
+                totalArrecadado += arrecadado;
+                totalCustos += despesas;
+
+                const saldo = arrecadado - despesas;
+
+                let lancamentosHtml = (festa.lancamentos || []).map(l => `
+                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding: 4px 0; border-bottom: 1px dashed #eee;">
+                        <span>🔴 ${l.desc}</span>
+                        <span><strong>R$ ${l.valor.toFixed(2)}</strong> <a href="#" onclick="removerLancamentoFesta(${festa.id}, ${l.id})" style="color:red; text-decoration:none; margin-left:8px;">✕</a></span>
+                    </div>
+                `).join('');
+
+                let presencasHtml = (festa.presencas || []).map((p, i) => `
+                    <tr style="font-size:0.85rem;">
+                        <td style="padding: 6px;"><strong>${i + 1}</strong></td>
+                        <td style="padding: 6px;">${p.nome}</td>
+                        <td style="padding: 6px;">${p.tel || '-'}</td>
+                        <td style="padding: 6px; color: var(--accent-orange); font-weight: bold;">R$ 35,00</td>
+                        <td style="padding: 6px; text-align: right;"><a href="#" onclick="removerPresencaFesta(${festa.id}, ${p.id})" style="color:red; text-decoration:none;">Excluir</a></td>
+                    </tr>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="festa-item-card">
+                        <div class="festa-header">
+                            <div>
+                                <span class="festa-title-text">${festa.nome}</span>
+                                ${festa.orixa ? `<span class="badge badge-orange" style="margin-left: 6px;">${festa.orixa}</span>` : ''}
+                                <div style="font-size:0.78rem; color: var(--text-muted);">Data: ${festa.data ? festa.data.split('-').reverse().join('/') : 'A definir'}</div>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger btn-sm" onclick="removerFesta(${festa.id})">Excluir</button>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
+                            <div class="dash-card">
+                                <div class="title">Arrecadado</div>
+                                <div class="value" style="font-size:0.95rem; color: var(--accent-orange);">R$ ${arrecadado.toFixed(2)}</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="title">Despesas</div>
+                                <div class="value" style="font-size:0.95rem; color: var(--danger-red);">R$ ${despesas.toFixed(2)}</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="title">Saldo</div>
+                                <div class="value" style="font-size:0.95rem; color: ${saldo >= 0 ? 'var(--success-green)' : 'var(--danger-red)'};">R$ ${saldo.toFixed(2)}</div>
+                            </div>
+                        </div>
+
+                        <div style="background:#f9fbf9; border:1px solid #e0efe0; padding: 10px; border-radius:6px; margin-top: 8px; margin-bottom: 8px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                                <strong style="font-size:0.85rem; color: var(--primary-green-dark);">📋 Convidados (${(festa.presencas || []).length} — R$ 35,00)</strong>
+                            </div>
+                            ${(festa.presencas || []).length > 0 ? `
+                                <div class="table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="padding:4px;">#</th>
+                                                <th style="padding:4px;">Nome</th>
+                                                <th style="padding:4px;">Tel</th>
+                                                <th style="padding:4px; text-align:right;">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>${presencasHtml}</tbody>
+                                    </table>
+                                </div>
+                            ` : '<span style="font-size:0.8rem; color:#888;">Nenhum convidado confirmado ainda.</span>'}
+                        </div>
+
+                        <div style="background:#fcfcfc; border:1px solid #eee; padding: 10px; border-radius:6px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                                <strong style="font-size:0.85rem;">💸 Despesas</strong>
+                                <button class="btn btn-primary btn-sm" onclick="adicionarDespesaFesta(${festa.id})">+ Despesa</button>
+                            </div>
+                            <div>${lancamentosHtml || '<span style="font-size:0.8rem; color:#888;">Nenhuma despesa cadastrada.</span>'}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const dashArrecadado = document.getElementById('dashFestaArrecadado');
+            if (dashArrecadado) {
+                dashArrecadado.innerText = `R$ ${totalArrecadado.toFixed(2)}`;
+                dashArrecadado.style.color = 'var(--accent-orange)';
+            }
+            document.getElementById('dashFestaCustos').innerText = `R$ ${totalCustos.toFixed(2)}`;
+            const saldoGeral = totalArrecadado - totalCustos;
+            const elSaldo = document.getElementById('dashFestaSaldo');
+            elSaldo.innerText = `R$ ${saldoGeral.toFixed(2)}`;
+            elSaldo.style.color = saldoGeral >= 0 ? 'var(--success-green)' : 'var(--danger-red)';
+        }
+
+        /* --- LÓGICA: FILHOS DE SANTO --- */
+        function salvarFilho(e) {
+            e.preventDefault();
+            const idEdit = document.getElementById('fIdEdit').value;
+            const nome = document.getElementById('fNome').value;
+            const tel = document.getElementById('fTel').value;
+            const aniversario = document.getElementById('fAniversario').value;
+
+            if (idEdit) {
+                const filho = appState.filhos.find(x => x.id == idEdit);
+                if (filho) {
+                    filho.nome = nome;
+                    filho.tel = tel;
+                    filho.aniversario = aniversario;
+                }
+            } else {
+                appState.filhos.push({
+                    id: Date.now(),
+                    nome: nome,
+                    tel: tel,
+                    aniversario: aniversario,
+                    valor: 50
+                });
+            }
+
+            cancelarEdicaoFilho();
+            saveData();
+        }
+
+        function editarFilho(id) {
+            const filho = appState.filhos.find(x => x.id === id);
+            if (!filho) return;
+
+            document.getElementById('fIdEdit').value = filho.id;
+            document.getElementById('fNome').value = filho.nome || '';
+            document.getElementById('fTel').value = filho.tel || '';
+            document.getElementById('fAniversario').value = filho.aniversario || '';
+
+            document.getElementById('tituloFormFilho').innerText = 'Editar Filho de Santo';
+            document.getElementById('btnSalvarFilho').innerText = '✏️ Atualizar Filho';
+            document.getElementById('btnSalvarFilho').classList.remove('btn-primary');
+            document.getElementById('btnSalvarFilho').classList.add('btn-orange');
+            document.getElementById('btnCancelarEditFilho').style.display = 'inline-flex';
+
+            document.getElementById('formFilho').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function cancelarEdicaoFilho() {
+            document.getElementById('fIdEdit').value = '';
+            document.getElementById('fNome').value = '';
+            document.getElementById('fTel').value = '';
+            document.getElementById('fAniversario').value = '';
+
+            document.getElementById('tituloFormFilho').innerText = 'Cadastrar Filho de Santo';
+            document.getElementById('btnSalvarFilho').innerText = 'Cadastrar Filho';
+            document.getElementById('btnSalvarFilho').classList.remove('btn-orange');
+            document.getElementById('btnSalvarFilho').classList.add('btn-primary');
+            document.getElementById('btnCancelarEditFilho').style.display = 'none';
+        }
+
+        function removerFilho(id) {
+            if(confirm("Remover este filho de santo da lista?")) {
+                appState.filhos = appState.filhos.filter(x => x.id !== id);
+                if (document.getElementById('fIdEdit').value == id) {
+                    cancelarEdicaoFilho();
+                }
+                saveData();
+            }
+        }
+
+        function renderFilhos() {
+            const tbody = document.getElementById('tblFilhos');
+            tbody.innerHTML = '';
+            
+            if(appState.filhos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum filho de santo cadastrado.</td></tr>';
+                return;
+            }
+
+            appState.filhos.forEach(f => {
+                let anivDisplay = f.aniversario || '-';
+                if (anivDisplay.includes('-')) {
+                    const partes = anivDisplay.split('-');
+                    if(partes.length === 3) anivDisplay = `${partes[2]}/${partes[1]}`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${f.nome}</strong></td>
+                        <td>${f.tel || '-'}</td>
+                        <td>🎂 ${anivDisplay}</td>
+                        <td>
+                            <button class="btn btn-orange btn-sm" onclick="editarFilho(${f.id})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="removerFilho(${f.id})">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        /* --- LÓGICA: MENSALIDADES --- */
+        function irParaMesAtual() {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            document.getElementById('mesRefSelect').value = `${ano}-${mes}`;
+            renderMensalidades();
+        }
+
+        function aoMudarMesSelect() {
+            renderMensalidades();
+        }
+
+        function navegarMes(delta) {
+            const val = document.getElementById('mesRefSelect').value;
+            if(!val) return;
+            const [anoStr, mesStr] = val.split('-');
+            let ano = parseInt(anoStr);
+            let mes = parseInt(mesStr) + delta;
+
+            if (mes > 12) {
+                mes = 1;
+                ano++;
+            } else if (mes < 1) {
+                mes = 12;
+                ano--;
+            }
+
+            const mFmt = String(mes).padStart(2, '0');
+            document.getElementById('mesRefSelect').value = `${ano}-${mFmt}`;
+            renderMensalidades();
+        }
+
+        function atualizarValorMensalidadeFilho(filhoId, novoValor) {
+            const valorNum = parseFloat(novoValor) || 0;
+            const filho = appState.filhos.find(f => f.id == filhoId);
+            if (filho) {
+                filho.valor = valorNum;
+                saveData();
+            }
+        }
+
+        function alterarStatusMensalidadeSelect(filhoId, mesChave, statusNovo) {
+            if(!appState.mensalidades[mesChave]) {
+                appState.mensalidades[mesChave] = {};
+            }
+
+            if(statusNovo === 'pago') {
+                const hojeStr = new Date().toISOString().substring(0,10);
+                appState.mensalidades[mesChave][filhoId] = {
+                    pago: true,
+                    dataPagamento: hojeStr
+                };
+            } else {
+                delete appState.mensalidades[mesChave][filhoId];
+            }
+            saveData();
+        }
+
+        function calcularConsumoCantinaFilho(filhoNome) {
+            if (!appState.cantinaVendas) return 0;
+            return appState.cantinaVendas
+                .filter(v => v.comprador === `[Filho] ${filhoNome}` && v.status === 'Fiado')
+                .reduce((sum, v) => sum + (v.total || 0), 0);
+        }
+
+        function renderMensalidades() {
+            const mesChave = document.getElementById('mesRefSelect').value;
+            if(!mesChave) return;
+
+            const [anoStr, mesStr] = mesChave.split('-');
+            const numMes = parseInt(mesStr);
+            const nomeMesExtenso = NOMES_MESES[numMes - 1];
+
+            document.getElementById('lblMesSelecionadoNome').innerText = `${nomeMesExtenso} de ${anoStr}`;
+
+            const tbodyUnificado = document.getElementById('tblMensalidadesUnificada');
+            tbodyUnificado.innerHTML = '';
+
+            const statusMesAtivo = appState.mensalidades[mesChave] || {};
+
+            let totalPrevisto = 0;
+            let totalRecebido = 0;
+            let totalPendente = 0;
+
+            if(appState.filhos.length === 0) {
+                tbodyUnificado.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Nenhum filho de santo cadastrado. Cadastre os filhos na aba "Filhos de Santo".</td></tr>';
+            } else {
+                appState.filhos.forEach(f => {
+                    const reg = statusMesAtivo[f.id];
+                    const estaPago = typeof reg === 'object' ? reg.pago : !!reg;
+                    const valorMensal = f.valor !== undefined ? f.valor : 50;
+                    const consumoCantina = calcularConsumoCantinaFilho(f.nome);
+                    const totalAPagar = valorMensal + consumoCantina;
+                    
+                    totalPrevisto += totalAPagar;
+                    if (estaPago) {
+                        totalRecebido += totalAPagar;
+                    } else {
+                        totalPendente += totalAPagar;
+                    }
+
+                    tbodyUnificado.innerHTML += `
+                        <tr>
+                            <td><strong>${f.nome}</strong></td>
+                            <td>${f.tel || '-'}</td>
+                            <td>
+                                <input type="number" class="form-control" style="width: 85px; padding: 4px 6px; font-weight: bold;" value="${valorMensal}" step="0.01" min="0" onchange="atualizarValorMensalidadeFilho(${f.id}, this.value)" inputmode="numeric">
+                            </td>
+                            <td><span style="color: ${consumoCantina > 0 ? 'var(--danger-red)' : 'var(--text-muted)'}; font-weight: bold;">R$ ${consumoCantina.toFixed(2)}</span></td>
+                            <td><strong style="color: var(--primary-green-dark);">R$ ${totalAPagar.toFixed(2)}</strong></td>
+                            <td>
+                                <select class="select-status-pago ${estaPago ? 'pago' : 'pendente'}" onchange="alterarStatusMensalidadeSelect(${f.id}, '${mesChave}', this.value)">
+                                    <option value="pago" ${estaPago ? 'selected' : ''}>✅ Pago</option>
+                                    <option value="pendente" ${!estaPago ? 'selected' : ''}>⏳ Pendente</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('dashMensalidadePrevisto').innerText = `R$ ${totalPrevisto.toFixed(2)}`;
+            document.getElementById('dashMensalidadeRecebido').innerText = `R$ ${totalRecebido.toFixed(2)}`;
+            document.getElementById('dashMensalidadePendente').innerText = `R$ ${totalPendente.toFixed(2)}`;
+        }
+
+        /* --- LÓGICA: ESTOQUE --- */
+        function adicionarItemEstoque(e) {
+            e.preventDefault();
+            const nome = document.getElementById('eNome').value;
+            const categoria = document.getElementById('eCategoria').value;
+            const qtd = parseInt(document.getElementById('eQtd').value) || 0;
+
+            appState.estoque.push({
+                id: Date.now(),
+                nome: nome,
+                categoria: categoria,
+                qtd: qtd
+            });
+
+            document.getElementById('eNome').value = '';
+            document.getElementById('eQtd').value = '10';
+            saveData();
+        }
+
+        function filtrarEstoque(cat, btn) {
+            filtroEstoqueCategoria = cat;
+            document.querySelectorAll('.filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
+            if(btn) btn.classList.add('active-filter');
+            renderEstoque();
+        }
+
+        function alterarQtdEstoque(id, delta) {
+            const item = appState.estoque.find(x => x.id === id);
+            if(item) {
+                item.qtd = Math.max(0, item.qtd + delta);
+                saveData();
+            }
+        }
+
+        function removerItemEstoque(id) {
+            if(confirm("Deseja realmente apagar este item do estoque?")) {
+                appState.estoque = appState.estoque.filter(x => x.id !== id);
+                saveData();
+            }
+        }
+
+        function renderEstoque() {
+            const tbody = document.getElementById('tblEstoque');
+            tbody.innerHTML = '';
+
+            let itensFiltrados = appState.estoque;
+            if (filtroEstoqueCategoria !== 'Todos') {
+                itensFiltrados = appState.estoque.filter(i => (i.categoria || 'Outros') === filtroEstoqueCategoria);
+            }
+
+            if (itensFiltrados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum item encontrado nesta categoria.</td></tr>';
+                return;
+            }
+
+            itensFiltrados.forEach(i => {
+                const cat = i.categoria || 'Outros';
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${i.nome}</strong></td>
+                        <td><span class="badge badge-orange">${cat}</span></td>
+                        <td><strong>${i.qtd}</strong> un</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="alterarQtdEstoque(${i.id}, -1)">-</button>
+                            <button class="btn btn-secondary btn-sm" onclick="alterarQtdEstoque(${i.id}, 1)">+</button>
+                            <button class="btn btn-danger btn-sm" onclick="removerItemEstoque(${i.id})" style="margin-left: 4px;">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        /* --- LÓGICA: CANTINA DA VÓ --- */
+        function popularSelectProdutosCantina() {
+            const select = document.getElementById('cantinaProduto');
+            if(!select) return;
+            select.innerHTML = '<option value="">-- Selecione o Produto --</option>';
+            PRODUTOS_CANTINA.forEach((p, idx) => {
+                select.innerHTML += `<option value="${idx}">${p.nome} — R$ ${p.preco.toFixed(2)}</option>`;
+            });
+        }
+
+        function popularSelectFilhosCantina() {
+            const select = document.getElementById('cantinaFilhoId');
+            if(!select) return;
+            const valAtual = select.value;
+            select.innerHTML = '<option value="">-- Selecione o Filho --</option>';
+            appState.filhos.forEach(f => {
+                select.innerHTML += `<option value="${f.id}">${f.nome}</option>`;
+            });
+            if(valAtual) select.value = valAtual;
+        }
+
+        function mudarTipoCompradorCantina() {
+            const tipo = document.getElementById('cantinaTipoComprador').value;
+            const grpFilho = document.getElementById('grupoFilhoSelect');
+            const grpConsulente = document.getElementById('grupoConsulenteInput');
+
+            if(tipo === 'Filho') {
+                grpFilho.style.display = 'flex';
+                grpConsulente.style.display = 'none';
+                document.getElementById('cantinaFilhoId').setAttribute('required', 'required');
+                document.getElementById('cantinaNomeConsulente').removeAttribute('required');
+            } else {
+                grpFilho.style.display = 'none';
+                grpConsulente.style.display = 'flex';
+                document.getElementById('cantinaFilhoId').removeAttribute('required');
+                document.getElementById('cantinaNomeConsulente').setAttribute('required', 'required');
+            }
+        }
+
+        function atualizarPrecoProdutoCantina() {
+            const idxProd = document.getElementById('cantinaProduto').value;
+            const qtd = parseInt(document.getElementById('cantinaQtd').value) || 1;
+            const txtTotal = document.getElementById('cantinaValorTotal');
+
+            if(idxProd !== '') {
+                const produto = PRODUTOS_CANTINA[idxProd];
+                const total = produto.preco * qtd;
+                txtTotal.value = `R$ ${total.toFixed(2)}`;
+            } else {
+                txtTotal.value = 'R$ 0,00';
+            }
+        }
+
+        function registrarVendaCantina(e) {
+            e.preventDefault();
+            const tipoComprador = document.getElementById('cantinaTipoComprador').value;
+            let nomeComprador = '';
+
+            if(tipoComprador === 'Filho') {
+                const filhoId = document.getElementById('cantinaFilhoId').value;
+                const filho = appState.filhos.find(f => f.id == filhoId);
+                if(!filho) {
+                    alert("Selecione um Filho de Santo válido!");
+                    return;
+                }
+                nomeComprador = `[Filho] ${filho.nome}`;
+            } else {
+                nomeComprador = `[Consulente] ${document.getElementById('cantinaNomeConsulente').value}`;
+            }
+
+            const idxProd = document.getElementById('cantinaProduto').value;
+            if(idxProd === '') {
+                alert("Selecione um produto!");
+                return;
+            }
+
+            const produto = PRODUTOS_CANTINA[idxProd];
+            const qtd = parseInt(document.getElementById('cantinaQtd').value) || 1;
+            const valorTotal = produto.preco * qtd;
+            const statusPgto = document.getElementById('cantinaStatusPgto').value;
+
+            const novaVenda = {
+                id: Date.now(),
+                dataHora: new Date().toLocaleString('pt-BR'),
+                comprador: nomeComprador,
+                produto: produto.nome,
+                qtd: qtd,
+                total: valorTotal,
+                status: statusPgto
+            };
+
+            appState.cantinaVendas.push(novaVenda);
+
+            document.getElementById('cantinaQtd').value = '1';
+            document.getElementById('cantinaProduto').value = '';
+            document.getElementById('cantinaValorTotal').value = 'R$ 0,00';
+            document.getElementById('cantinaNomeConsulente').value = '';
+
+            saveData();
+        }
+
+        function alternarStatusVendaCantina(id) {
+            const venda = appState.cantinaVendas.find(v => v.id === id);
+            if(venda) {
+                venda.status = venda.status === 'Pago' ? 'Fiado' : 'Pago';
+                saveData();
+            }
+        }
+
+        function removerVendaCantina(id) {
+            if(confirm("Deseja realmente excluir este registro de venda da cantina?")) {
+                appState.cantinaVendas = appState.cantinaVendas.filter(v => v.id !== id);
+                saveData();
+            }
+        }
+
+        function renderCantina() {
+            const tbody = document.getElementById('tblCantinaVendas');
+            tbody.innerHTML = '';
+
+            let totalRecebido = 0;
+            let totalFiado = 0;
+
+            if(appState.cantinaVendas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">Nenhuma venda registrada na cantina ainda.</td></tr>';
+            } else {
+                appState.cantinaVendas.forEach(v => {
+                    if(v.status === 'Pago') {
+                        totalRecebido += v.total;
+                    } else {
+                        totalFiado += v.total;
+                    }
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><small>${v.dataHora}</small></td>
+                            <td><strong>${v.comprador}</strong></td>
+                            <td>${v.produto}</td>
+                            <td>${v.qtd}x</td>
+                            <td><strong>R$ ${v.total.toFixed(2)}</strong></td>
+                            <td>
+                                <span class="badge ${v.status === 'Pago' ? 'badge-green' : 'badge-red'}" style="cursor:pointer;" onclick="alternarStatusVendaCantina(${v.id})" title="Clique para alterar o status">
+                                    ${v.status === 'Pago' ? '✅ Pago' : '⏳ Fiado'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="removerVendaCantina(${v.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('dashCantinaRecebido').innerText = `R$ ${totalRecebido.toFixed(2)}`;
+            document.getElementById('dashCantinaFiado').innerText = `R$ ${totalFiado.toFixed(2)}`;
+            const faturamentoTotal = totalRecebido + totalFiado;
+            document.getElementById('dashCantinaTotal').innerText = `R$ ${faturamentoTotal.toFixed(2)}`;
+        }
+
+        /* --- BACKUP & RESTAURAÇÃO --- */
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `GestaoAxe_Backup_${new Date().toISOString().substring(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function importData() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if(imported && typeof imported === 'object') {
+                        appState = imported;
+                        if (!appState.girasSemanais) appState.girasSemanais = [];
+                        if (!appState.filhos && imported.filhas) appState.filhos = imported.filhas;
+                        if (!appState.filhos) appState.filhos = [];
+                        if (!appState.consulentes) appState.consulentes = [];
+                        if (!appState.mensalidades) appState.mensalidades = {};
+                        if (!appState.estoque) appState.estoque = [];
+                        if (!appState.festas) appState.festas = [];
+                        if (!appState.cantinaVendas) appState.cantinaVendas = [];
+                        saveData();
+                        alert("Backup restaurado com sucesso na nuvem!");
+                    }
+                } catch(err) {
+                    alert("Erro ao ler o arquivo de backup.");
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
