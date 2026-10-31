@@ -37,7 +37,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding-bottom: 70px; /* Espaço para barra inferior no mobile */
+            padding-bottom: 70px;
         }
 
         /* --- TELA DE LOGIN --- */
@@ -77,17 +77,19 @@
             margin-bottom: 20px;
         }
 
+        .login-card input[type="email"],
         .login-card input[type="password"] {
             width: 100%;
             padding: 14px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             outline: none;
             transition: border-color 0.2s;
         }
 
+        .login-card input[type="email"]:focus,
         .login-card input[type="password"]:focus {
             border-color: var(--primary-green);
         }
@@ -208,7 +210,6 @@
             transition: all 0.2s;
         }
 
-        /* --- NAVEGAÇÃO DESKTOP / TABLET --- */
         nav.desktop-nav {
             background: #ffffff;
             border-bottom: 1px solid var(--border-color);
@@ -252,7 +253,6 @@
             background: #f0f7f0;
         }
 
-        /* --- NAVEGAÇÃO INFERIOR MÓVEL (MOBILE BOTTOM NAV) --- */
         .mobile-bottom-nav {
             display: none;
             position: fixed;
@@ -313,7 +313,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- DASHBOARD INICIAL / LANÇADOR DE APPS --- */
         .welcome-hero {
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
@@ -527,7 +526,7 @@
             justify-content: center;
             gap: 6px;
             font-size: 0.9rem;
-            min-height: 42px; /* Altura confortável para toque no mobile */
+            min-height: 42px;
         }
 
         .btn-sm {
@@ -711,7 +710,6 @@
             border-color: var(--danger-red);
         }
 
-        /* --- MEDIA QUERY PARA MOBILE (< 768px) --- */
         @media (max-width: 768px) {
             nav.desktop-nav {
                 display: none !important;
@@ -745,10 +743,11 @@
         }
     </style>
 
-    <!-- FIREBASE SDK v10 (MÓDULO DE NUVEM EM TEMPO REAL) -->
+    <!-- FIREBASE SDK v10 (NUVEM & AUTENTICAÇÃO) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDEyLS8d6Vzjz-lY0BR36tsLGDKZ9HW020",
@@ -762,9 +761,83 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
         window.db = db;
+        window.auth = auth;
 
+        // --- AUTENTICAÇÃO FIREBASE ---
+        window.fazerLoginFirebase = async function() {
+            const email = document.getElementById("email-input").value.trim();
+            const senha = document.getElementById("senha-input").value;
+            const erroEl = document.getElementById("erro-login");
+            const btnLogin = document.getElementById("btn-login");
+
+            if (!email || !senha) {
+                erroEl.textContent = "Por favor, preencha o e-mail e a senha.";
+                return;
+            }
+
+            try {
+                btnLogin.disabled = true;
+                btnLogin.textContent = "Entrando...";
+                erroEl.textContent = "";
+                
+                await signInWithEmailAndPassword(auth, email, senha);
+            } catch (error) {
+                console.error("Erro ao autenticar:", error);
+                btnLogin.disabled = false;
+                btnLogin.textContent = "Entrar";
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        erroEl.textContent = "E-mail inválido.";
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                    case 'auth/invalid-credential':
+                        erroEl.textContent = "E-mail ou senha incorretos.";
+                        break;
+                    case 'auth/too-many-requests':
+                        erroEl.textContent = "Muitas tentativas. Tente novamente mais tarde.";
+                        break;
+                    default:
+                        erroEl.textContent = "Erro ao efetuar login: " + error.message;
+                }
+            }
+        };
+
+        window.fazerLogoutFirebase = async function() {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Erro ao sair:", error);
+            }
+        };
+
+        // Escuta o estado da autenticação (Manter conectado / Logout)
+        onAuthStateChanged(auth, (user) => {
+            const overlay = document.getElementById("login-overlay");
+            const appContainer = document.getElementById("app-container");
+            const btnLogin = document.getElementById("btn-login");
+
+            if (user) {
+                overlay.style.display = "none";
+                appContainer.style.display = "flex";
+                if (btnLogin) {
+                    btnLogin.disabled = false;
+                    btnLogin.textContent = "Entrar";
+                }
+                document.getElementById("senha-input").value = "";
+                
+                window.inicializarSistema();
+            } else {
+                overlay.style.display = "flex";
+                appContainer.style.display = "none";
+            }
+        });
+
+        // --- FIRESTORE ---
         window.salvarEstadoNuvem = async function() {
             try {
                 await setDoc(doc(db, "gestao_axe", "dados_gerais"), window.appState);
@@ -832,13 +905,14 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
+    <!-- TELA DE LOGIN AUTENTICADA COM FIREBASE -->
     <div id="login-overlay">
         <div class="login-card">
             <h2>Gestão Axé</h2>
-            <p>Área Restrita — Acenda uma vela e peça licença para entrar:</p>
-            <input type="password" id="senha-input" placeholder="Senha de acesso" inputmode="text">
-            <button onclick="verificarSenha()">Entrar</button>
+            <p>Área Restrita — Digite suas credenciais para acessar o sistema:</p>
+            <input type="email" id="email-input" placeholder="E-mail do terreiro" autocomplete="email">
+            <input type="password" id="senha-input" placeholder="Senha de acesso" autocomplete="current-password">
+            <button id="btn-login" onclick="fazerLoginFirebase()">Entrar</button>
             <div id="erro-login"></div>
         </div>
     </div>
@@ -863,6 +937,7 @@
                     <span class="cloud-badge" title="Nuvem Conectada">☁️</span>
                     <button class="btn-header" onclick="exportData()" title="Salvar Backup">💾</button>
                     <button class="btn-header" onclick="importData()" title="Abrir Backup">📂</button>
+                    <button class="btn-header" onclick="fazerLogoutFirebase()" title="Sair do Sistema">🚪</button>
                     <input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(event)">
                 </div>
             </div>
@@ -911,7 +986,6 @@
                     <div class="welcome-text">
                         <h2>Que o Axé abençoe nossos trabalhos! 🙏</h2>
                         <p>Painel de Gestão Integrada do Terreiro</p>
-                        <p>Painel de Gestão Integrada do Terreiro</p>
                     </div>
                     <div class="quick-stats-hero">
                         <div class="hero-pill">
@@ -924,7 +998,6 @@
                 </div>
 
                 <div class="app-grid">
-                    <!-- ECRÃ 1: GIRAS -->
                     <div class="app-card" onclick="abrirAbaDireta('giras')">
                         <div>
                             <div class="app-card-top">
@@ -937,7 +1010,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 2: VISITANTES -->
                     <div class="app-card" onclick="abrirAbaDireta('filas')">
                         <div>
                             <div class="app-card-top">
@@ -950,7 +1022,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 3: FESTAS -->
                     <div class="app-card" onclick="abrirAbaDireta('festas')">
                         <div>
                             <div class="app-card-top">
@@ -963,7 +1034,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 4: FILHOS DE SANTO -->
                     <div class="app-card" onclick="abrirAbaDireta('filhos')">
                         <div>
                             <div class="app-card-top">
@@ -976,7 +1046,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 5: MENSALIDADES -->
                     <div class="app-card" onclick="abrirAbaDireta('mensalidades')">
                         <div>
                             <div class="app-card-top">
@@ -989,7 +1058,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 6: ESTOQUE -->
                     <div class="app-card" onclick="abrirAbaDireta('estoque')">
                         <div>
                             <div class="app-card-top">
@@ -1002,7 +1070,6 @@
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
 
-                    <!-- ECRÃ 7: CANTINA DA VÓ -->
                     <div class="app-card" onclick="abrirAbaDireta('cantina')">
                         <div>
                             <div class="app-card-top">
@@ -1016,7 +1083,6 @@
                     </div>
                 </div>
 
-                <!-- ATALHOS RÁPIDOS -->
                 <div class="quick-actions-bar">
                     <h3>⚡ Atalhos Rápidos</h3>
                     <div class="actions-flex">
@@ -1168,7 +1234,6 @@
                     </div>
                 </div>
 
-                <!-- REGISTRO DE PRESENÇA EM FESTAS -->
                 <div class="card">
                     <div class="card-title">
                         <span>📋 Lista de Presença da Festa</span>
@@ -1251,7 +1316,6 @@
                         <button class="btn btn-orange btn-sm" onclick="irParaMesAtual()">📅 Ir para Mês Vigente</button>
                     </div>
 
-                    <!-- Barra de Navegação Entre Meses -->
                     <div class="nav-mes-bar">
                         <button class="btn btn-secondary btn-sm" onclick="navegarMes(-1)">◀ Mês Anterior</button>
                         
@@ -1278,7 +1342,6 @@
                         </div>
                     </div>
 
-                    <!-- LISTAGEM COMPLETA DE MENSALIDADES -->
                     <div style="margin-top: 15px;">
                         <h4 style="color: var(--primary-green-dark); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
                             <span>📋 Lista Geral de Mensalidades dos Filhos de Santo</span>
@@ -1335,7 +1398,6 @@
                         <span>Itens e Materiais do Terreiro</span>
                     </div>
 
-                    <!-- Filtros de Categoria -->
                     <div class="filter-bar">
                         <button class="btn btn-secondary btn-sm active-filter" onclick="filtrarEstoque('Todos', this)">Todos</button>
                         <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Bebidas', this)">🍹 Bebidas</button>
@@ -1451,27 +1513,18 @@
     </div>
 
     <script>
-        const SENHA_CORRETA = "Trezedemaio@13";
-
-        function verificarSenha() {
-            const senhaDigitada = document.getElementById("senha-input").value;
-            const erroEl = document.getElementById("erro-login");
-
-            if (senhaDigitada === SENHA_CORRETA) {
-                document.getElementById("login-overlay").style.display = "none";
-                document.getElementById("app-container").style.display = "flex";
-                inicializarSistema();
-                abrirAbaDireta('home');
-                verificarAniversariantesDoDia();
-            } else {
-                erroEl.textContent = "Senha incorreta! Tente novamente.";
-            }
-        }
-
-        document.getElementById("senha-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                verificarSenha();
-            }
+        // Adiciona atalho para submeter login apertando Enter no input de e-mail ou senha
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = [document.getElementById("email-input"), document.getElementById("senha-input")];
+            inputs.forEach(input => {
+                if(input) {
+                    input.addEventListener("keypress", function(event) {
+                        if (event.key === "Enter") {
+                            window.fazerLoginFirebase();
+                        }
+                    });
+                }
+            });
         });
 
         window.FILHOS_INICIAIS = [
@@ -1545,7 +1598,7 @@
         const NOMES_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         const MESES_ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
-        function inicializarSistema() {
+        window.inicializarSistema = function() {
             if (window.iniciarEscutaNuvem) {
                 window.iniciarEscutaNuvem();
             }
@@ -1555,7 +1608,8 @@
             popularSelectProdutosCantina();
             
             renderAll();
-        }
+            verificarAniversariantesDoDia();
+        };
 
         let debounceTimer = null;
         function saveData() {
@@ -2031,7 +2085,6 @@ Desejamos muito Axé, saúde e luz! ✨🌿`);
                             </div>
                         </div>
 
-                        <!-- LISTA DE PRESENÇA DA FESTA -->
                         <div style="background:#f9fbf9; border:1px solid #e0efe0; padding: 10px; border-radius:6px; margin-top: 8px; margin-bottom: 8px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
                                 <strong style="font-size:0.85rem; color: var(--primary-green-dark);">📋 Convidados (${(festa.presencas || []).length} — R$ 35,00)</strong>
