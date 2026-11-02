@@ -3,57 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gestão Axé — Tenda Espírita Raio de Iansã e Cabocla Jupira</title>
+    <title>Gestão da Tenda — Tenda Espírita Raio de Iansã e Cabocla Jupira</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-green: #2e7d32;
-            --primary-green-light: #4caf50;
-            --primary-green-dark: #1b5e20;
+            /* Verde suave e descansativo para o painel */
+            --primary-green: #388e3c;
+            --primary-green-light: #66bb6a;
+            --primary-green-bg: #e8f5e9;
+            --primary-green-soft: #f1f8e9;
+            --primary-dark: #1b4332;
+            
             --accent-orange: #f57c00;
-            --accent-orange-light: #ffb74d;
-            --bg-light: #f4f7f4;
-            --card-bg: #ffffff;
-            --text-dark: #2c3e50;
-            --text-muted: #6c757d;
-            --border-color: #e0e0e0;
-            --danger-red: #d32f2f;
-            --warning-yellow: #fbc02d;
-            --success-green: #388e3c;
-            --shadow-soft: 0 4px 15px rgba(0,0,0,0.06);
-            --shadow-hover: 0 8px 25px rgba(0,0,0,0.12);
+            --accent-orange-light: #ff9800;
+            --accent-orange-bg: #fff3e0;
+            
+            /* Fundo suave claro para leitura confortável */
+            --app-bg: #f4f8f5;
+            
+            /* Gradiente escuro exclusivo da Tela de Login */
+            --login-bg-gradient: linear-gradient(135deg, #0d2818 0%, #1b4332 40%, #2e7d32 85%, #388e3c 100%);
         }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: var(--app-bg);
+            color: #2c3e50;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding-bottom: 70px;
         }
 
-        #app-container {
+        /* --- TELA DE LOGIN (ESTILO GLASSMORPHIC MANTIDO) --- */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--login-bg-gradient);
             display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            padding: 15px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        .login-card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .login-card p {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin-bottom: 24px;
+        }
+
+        .login-card .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .login-card .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 14px;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-card input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--accent-orange), #e65100);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(245, 124, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-card button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(245, 124, 0, 0.45);
+        }
+
+        #erro-login {
+            color: #dc2626;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffffff;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- SISTEMA PRINCIPAL --- */
+        #app-container {
+            display: none;
             flex-direction: column;
             min-height: 100vh;
+            padding-bottom: 80px;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green));
-            color: white;
-            padding: 0.7rem 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            background: #ffffff;
+            border-bottom: 1px solid #c8e6c9;
             position: sticky;
             top: 0;
             z-index: 1000;
+            padding: 0.9rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(46, 125, 50, 0.05);
         }
 
         .header-content {
@@ -67,37 +199,34 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
         }
 
         .custom-logo {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-green-light), var(--primary-green));
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        .custom-logo svg {
-            width: 100%;
-            height: 100%;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 3px 8px rgba(46, 125, 50, 0.2);
         }
 
         .header-title h1 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
+            color: var(--primary-dark);
             line-height: 1.2;
         }
 
         .header-title p {
             font-size: 0.75rem;
-            opacity: 0.95;
-            color: var(--accent-orange-light);
+            font-weight: 600;
+            color: var(--primary-green);
         }
 
         .backup-controls {
@@ -106,38 +235,33 @@
             align-items: center;
         }
 
-        .cloud-badge {
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-            padding: 5px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.3);
-            cursor: help;
-        }
-
         .btn-header {
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #c8e6c9;
+            color: var(--primary-green);
+            padding: 8px 14px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
+            gap: 6px;
+        }
+
+        .btn-header:hover {
+            background: var(--primary-green-bg);
+            border-color: var(--primary-green);
         }
 
         nav.desktop-nav {
             background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e2e8f0;
             position: sticky;
-            top: 57px;
+            top: 67px;
             z-index: 999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
         .nav-tabs {
@@ -146,32 +270,37 @@
             display: flex;
             overflow-x: auto;
             scrollbar-width: none;
+            padding: 4px 1rem;
+            gap: 6px;
         }
 
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
-        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
-            padding: 12px 18px;
-            background: none;
+            padding: 10px 16px;
+            background: transparent;
             border: none;
-            border-bottom: 3px solid transparent;
             font-weight: 600;
-            color: var(--text-muted);
+            color: #64748b;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             display: flex;
             align-items: center;
             gap: 8px;
+            border-radius: 10px;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-green);
+            background: var(--primary-green-bg);
         }
 
         .tab-btn.active {
             color: var(--primary-green);
-            border-bottom-color: var(--primary-green);
-            background: #f0f7f0;
+            background: var(--primary-green-bg);
+            border-bottom: 2px solid var(--primary-green);
         }
 
         .mobile-bottom-nav {
@@ -181,11 +310,11 @@
             left: 0;
             width: 100%;
             background: #ffffff;
-            border-top: 1px solid var(--border-color);
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+            border-top: 1px solid #c8e6c9;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
             z-index: 1000;
             justify-content: space-around;
-            padding: 6px 2px;
+            padding: 8px 4px;
         }
 
         .mobile-nav-item {
@@ -194,8 +323,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-muted);
-            font-size: 0.68rem;
+            color: #64748b;
+            font-size: 0.65rem;
             font-weight: 600;
             cursor: pointer;
             padding: 4px;
@@ -204,7 +333,7 @@
         }
 
         .mobile-nav-item span.icon {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             margin-bottom: 2px;
         }
 
@@ -214,8 +343,8 @@
 
         main {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 12px;
+            margin: 24px auto;
+            padding: 0 16px;
             flex: 1;
             width: 100%;
         }
@@ -225,153 +354,137 @@
             animation: fadeIn 0.25s ease-in-out;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .welcome-hero {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-dark) 100%);
             color: white;
-            border-radius: 14px;
-            padding: 22px 18px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-soft);
+            border-radius: 20px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-hero::after {
-            content: "🌿";
-            position: absolute;
-            right: -10px;
-            bottom: -20px;
-            font-size: 8rem;
-            opacity: 0.12;
-            pointer-events: none;
         }
 
         .welcome-text h2 {
-            font-size: 1.35rem;
-            margin-bottom: 6px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .welcome-text p {
-            font-size: 0.88rem;
+            font-size: 0.95rem;
             opacity: 0.9;
         }
 
-        .quick-stats-hero {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
         .hero-pill {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
-            padding: 8px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.25);
-            font-size: 0.82rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 0.88rem;
+            font-weight: 600;
         }
 
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
         }
 
         .app-card {
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            border: 1px solid #e8eee8;
-            box-shadow: var(--shadow-soft);
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             transition: all 0.25s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
         }
 
-        .app-card:active {
-            transform: scale(0.98);
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.12);
+            border-color: #c8e6c9;
         }
 
         .app-card-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .app-icon {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            background: #f0f7f0;
-            color: var(--primary-green-dark);
+            background: var(--primary-green-bg);
+            color: var(--primary-green);
         }
 
         .app-card-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--primary-green-dark);
-            margin-bottom: 4px;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
         }
 
         .app-card-desc {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            line-height: 1.35;
-            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.4;
+            margin-bottom: 18px;
         }
 
         .app-card-badge {
-            font-size: 0.78rem;
-            font-weight: 700;
-            padding: 3px 9px;
-            border-radius: 20px;
-            background: #f4f4f4;
-            color: var(--text-dark);
-            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            background: var(--primary-green-bg);
+            color: var(--primary-green);
+            border: 1px solid #c8e6c9;
+        }
+
+        .app-card-badge.badge-warning {
+            background: var(--accent-orange-bg);
+            color: var(--accent-orange);
+            border-color: #ffe0b2;
         }
 
         .quick-actions-bar {
-            background: white;
-            border-radius: 14px;
-            padding: 16px;
-            border: 1px solid #e8eee8;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            margin-bottom: 24px;
         }
 
         .quick-actions-bar h3 {
-            font-size: 0.95rem;
-            color: var(--primary-green-dark);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 1.05rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 14px;
         }
 
         .actions-flex {
@@ -381,20 +494,21 @@
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 15px;
-            border: 1px solid #e8eee8;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            margin-bottom: 22px;
+            border: 1px solid #e2e8f0;
         }
 
         .card-title {
-            font-size: 1.05rem;
-            color: var(--primary-green-dark);
-            margin-bottom: 12px;
-            border-bottom: 2px solid #e0efe0;
-            padding-bottom: 8px;
+            font-size: 1.15rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--primary-green-bg);
+            padding-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -404,41 +518,43 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .form-group label {
             font-size: 0.82rem;
             font-weight: 600;
-            color: var(--text-dark);
+            color: #475569;
         }
 
         .form-control {
-            padding: 11px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.2s;
-            background: #fff;
+            transition: all 0.2s;
+            background: #ffffff;
             width: 100%;
+            color: #1e293b;
         }
 
         .form-control:focus {
             border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.15);
         }
 
         .btn {
-            padding: 11px 16px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -447,43 +563,47 @@
             justify-content: center;
             gap: 6px;
             font-size: 0.9rem;
-            min-height: 42px;
+            min-height: 44px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
         }
 
+        .btn:hover { transform: translateY(-1px); }
+
         .btn-sm {
-            padding: 6px 10px;
+            padding: 6px 12px;
             font-size: 0.8rem;
-            border-radius: 6px;
-            min-height: 32px;
+            border-radius: 10px;
+            min-height: 34px;
         }
 
         .btn-primary {
-            background-color: var(--primary-green);
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
             color: white;
-        }
-
-        .btn-primary:active {
-            background-color: var(--primary-green-dark);
+            box-shadow: 0 3px 10px rgba(46, 125, 50, 0.2);
         }
 
         .btn-orange {
-            background-color: var(--accent-orange);
+            background: linear-gradient(135deg, var(--accent-orange), #e65100);
             color: white;
+            box-shadow: 0 3px 10px rgba(245, 124, 0, 0.2);
         }
 
         .btn-secondary {
-            background-color: #e0e0e0;
-            color: var(--text-dark);
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
         }
 
         .btn-secondary.active-filter {
-            background-color: var(--primary-green);
+            background: var(--primary-green);
             color: white;
+            border-color: var(--primary-green);
         }
 
         .btn-danger {
-            background-color: var(--danger-red);
-            color: white;
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
         }
 
         .table-responsive {
@@ -500,175 +620,219 @@
         }
 
         th, td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         th {
-            background-color: #e8f5e9;
-            color: var(--primary-green-dark);
+            background-color: var(--primary-green-bg);
+            color: var(--primary-dark);
             font-weight: 600;
         }
 
         .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 4px 10px;
+            border-radius: 9999px;
             font-size: 0.72rem;
             font-weight: 600;
             color: white;
             display: inline-block;
         }
 
-        .badge-green { background-color: var(--success-green); }
+        .badge-green { background-color: var(--primary-green); }
         .badge-orange { background-color: var(--accent-orange); }
-        .badge-red { background-color: var(--danger-red); }
+        .badge-red { background-color: #ef4444; }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
         }
 
         .dash-card {
-            background: #f8faf8;
-            border: 1px solid #d8e6d8;
-            border-radius: 10px;
-            padding: 12px;
+            background: var(--primary-green-soft);
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            padding: 16px;
         }
 
         .dash-card .title {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #546e7a;
             margin-bottom: 4px;
             font-weight: 600;
+            text-transform: uppercase;
         }
 
         .dash-card .value {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: var(--primary-green-dark);
+            color: var(--primary-dark);
         }
 
+        /* CARD DE RESUMO SIMPLIFICADO PARA HISTÓRICO DE VISITANTES */
+        .historico-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .historico-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .historico-card:hover {
+            border-color: var(--primary-green);
+            background: var(--primary-green-soft);
+            transform: translateY(-2px);
+        }
+
+        .historico-card.active {
+            border-color: var(--primary-green);
+            background: var(--primary-green-bg);
+            box-shadow: 0 4px 10px rgba(56, 142, 60, 0.12);
+        }
+
+        .historico-count {
+            background: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 999px;
+        }
+
+        /* LAYOUT DE CARTÃO DE FESTAS */
         .festa-item-card {
             background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
         .festa-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 8px;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 10px;
         }
 
-        .festa-title-text {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--primary-green-dark);
-        }
-
-        .gira-summary-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
+        /* SUB-NAVEGAÇÃO SIMPLIFICADA */
+        .subnav-pills {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-green-bg);
+            padding-bottom: 10px;
         }
 
-        .nav-mes-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f0f7f0;
-            border: 1px solid #c8e6c9;
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .select-status-pago {
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.82rem;
+        .subnav-btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            outline: none;
-            border: 1px solid #ccc;
+            background: #f1f5f9;
+            color: #475569;
+            transition: all 0.2s;
         }
 
-        .select-status-pago.pago {
-            background-color: #e8f5e9;
-            color: var(--success-green);
-            border-color: var(--success-green);
+        .subnav-btn.active {
+            background: var(--primary-green);
+            color: white;
+            box-shadow: 0 3px 8px rgba(46, 125, 50, 0.2);
         }
 
-        .select-status-pago.pendente {
-            background-color: #ffebee;
-            color: var(--danger-red);
-            border-color: var(--danger-red);
+        /* MODAL EXPORTAR */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-box h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .modal-box p {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .modal-option-btn {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            background: #f8faf8;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-option-btn:hover {
+            background: var(--primary-green-bg);
+            border-color: var(--primary-green);
         }
 
         @media (max-width: 768px) {
-            nav.desktop-nav {
-                display: none !important;
-            }
-            .mobile-bottom-nav {
-                display: flex !important;
-            }
-            main {
-                margin: 12px auto;
-                padding: 0 8px;
-            }
-            .header-title h1 {
-                font-size: 1rem;
-            }
-            .header-title p {
-                font-size: 0.7rem;
-            }
-            .custom-logo {
-                width: 36px;
-                height: 36px;
-            }
-            .welcome-hero {
-                padding: 16px 14px;
-            }
-            .welcome-text h2 {
-                font-size: 1.15rem;
-            }
-            .app-grid {
-                grid-template-columns: 1fr;
-            }
+            nav.desktop-nav { display: none !important; }
+            .mobile-bottom-nav { display: flex !important; }
+            main { margin: 16px auto; padding: 0 10px; }
+            .header-title h1 { font-size: 1.05rem; }
+            .header-title p { font-size: 0.7rem; }
+            .custom-logo { width: 38px; height: 38px; }
+            .welcome-hero { padding: 20px 16px; }
+            .welcome-text h2 { font-size: 1.25rem; }
+            .app-grid { grid-template-columns: 1fr; }
         }
     </style>
 
-    <!-- FIREBASE SDK v10 -->
+    <!-- FIREBASE SDK v10 (AUTENTICAÇÃO + FIRESTORE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDEyLS8d6Vzjz-lY0BR36tsLGDKZ9HWO20",
@@ -687,19 +851,66 @@
         window.db = db;
         window.auth = auth;
 
-        // Proteção de Rota: se o usuário não estiver autenticado, manda de volta para o login.html
         onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
+            const loginScreen = document.getElementById("login-screen");
+            const appContainer = document.getElementById("app-container");
+
+            if (user) {
+                loginScreen.style.display = "none";
+                appContainer.style.display = "flex";
                 window.inicializarSistema();
+            } else {
+                loginScreen.style.display = "flex";
+                appContainer.style.display = "none";
             }
         });
+
+        window.fazerLoginFirebase = async function() {
+            const emailEl = document.getElementById("email-input");
+            const senhaEl = document.getElementById("senha-input");
+            const email = emailEl.value.trim();
+            const senha = senhaEl.value;
+            const erroEl = document.getElementById("erro-login");
+            const btnLogin = document.getElementById("btn-login");
+
+            if (!email || !senha) {
+                erroEl.textContent = "Por favor, preencha o e-mail e a senha.";
+                return;
+            }
+
+            try {
+                btnLogin.disabled = true;
+                emailEl.disabled = true;
+                senhaEl.disabled = true;
+                btnLogin.innerHTML = `<span class="spinner"></span> Autenticando...`;
+                erroEl.textContent = "";
+
+                await signInWithEmailAndPassword(auth, email, senha);
+            } catch (error) {
+                console.error("Erro no Login:", error);
+                btnLogin.disabled = false;
+                emailEl.disabled = false;
+                senhaEl.disabled = false;
+                btnLogin.textContent = "Entrar";
+
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        erroEl.textContent = "Endereço de e-mail inválido.";
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                    case 'auth/invalid-credential':
+                        erroEl.textContent = "E-mail ou senha incorretos.";
+                        break;
+                    default:
+                        erroEl.textContent = "Falha no login: " + (error.message || error.code);
+                }
+            }
+        };
 
         window.fazerLogout = async function() {
             try {
                 await signOut(auth);
-                window.location.href = "login.html";
             } catch (error) {
                 console.error("Erro ao sair:", error);
             }
@@ -717,18 +928,10 @@
             try {
                 onSnapshot(doc(db, "gestao_axe", "dados_gerais"), (docSnap) => {
                     if (docSnap.exists()) {
-                        const loaded = docSnap.data();
-                        window.appState = loaded;
-                        if (!window.appState.girasSemanais) window.appState.girasSemanais = [];
-                        if (!window.appState.filhos && loaded.filhas) window.appState.filhos = loaded.filhas;
-                        if (!window.appState.filhos) window.appState.filhos = [];
-                        if (!window.appState.consulentes) window.appState.consulentes = [];
-                        if (!window.appState.mensalidades) window.appState.mensalidades = {};
-                        if (!window.appState.estoque) window.appState.estoque = [];
-                        if (!window.appState.festas) window.appState.festas = [];
-                        if (!window.appState.cantinaVendas) window.appState.cantinaVendas = [];
+                        window.appState = docSnap.data();
                     }
-                    
+                    window.sanitizarAppState();
+
                     if (!window.appState.filhos || window.appState.filhos.length === 0) {
                         window.appState.filhos = window.FILHOS_INICIAIS.map((f, index) => ({
                             id: Date.now() + index,
@@ -739,10 +942,9 @@
                         }));
                         window.salvarEstadoNuvem();
                     }
-
                     window.renderAll();
                 }, (error) => {
-                    console.warn("Modo offline ativo (arquivos locais):", error);
+                    console.warn("Modo offline ativo:", error);
                     carregarModoLocal();
                 });
             } catch (e) {
@@ -753,10 +955,9 @@
         function carregarModoLocal() {
             const saved = localStorage.getItem('gestao_axe_data');
             if (saved) {
-                try {
-                    window.appState = JSON.parse(saved);
-                } catch(e) {}
+                try { window.appState = JSON.parse(saved); } catch(e) {}
             }
+            window.sanitizarAppState();
             if (!window.appState.filhos || window.appState.filhos.length === 0) {
                 window.appState.filhos = window.FILHOS_INICIAIS.map((f, index) => ({
                     id: Date.now() + index,
@@ -768,56 +969,83 @@
             }
             window.renderAll();
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const inputs = [document.getElementById("email-input"), document.getElementById("senha-input")];
+            inputs.forEach(input => {
+                if(input) {
+                    input.addEventListener("keypress", (e) => {
+                        if (e.key === "Enter") window.fazerLoginFirebase();
+                    });
+                }
+            });
+        });
     </script>
 </head>
 <body>
 
+    <!-- TELA DE LOGIN (MANTIDA INTEGRALMENTE) -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="logo-icon">🌿</div>
+            <h2>Gestão da Tenda</h2>
+            <p>T.E. Raio de Iansã e Cabocla Jupira</p>
+            
+            <div class="form-group">
+                <label for="email-input">E-mail</label>
+                <input type="email" id="email-input" placeholder="seu.email@exemplo.com" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="senha-input">Senha</label>
+                <input type="password" id="senha-input" placeholder="Digite sua senha" autocomplete="current-password">
+            </div>
+
+            <button id="btn-login" onclick="fazerLoginFirebase()">Entrar</button>
+            <div id="erro-login"></div>
+        </div>
+    </div>
+
+    <!-- SISTEMA PRINCIPAL -->
     <div id="app-container">
         <header>
             <div class="header-content">
                 <div class="logo-area" onclick="abrirAbaDireta('home')">
-                    <div class="custom-logo">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="42" fill="none" stroke="#2e7d32" stroke-width="7"/>
-                            <path d="M 52 18 L 28 50 L 46 50 L 40 82 L 72 44 L 52 44 Z" fill="#f57c00"/>
-                        </svg>
-                    </div>
+                    <div class="custom-logo">🌿</div>
                     <div class="header-title">
-                        <h1>Gestão Axé</h1>
+                        <h1>Gestão da Tenda</h1>
                         <p>T.E. Raio de Iansã e Cabocla Jupira</p>
                     </div>
                 </div>
                 <div class="backup-controls">
-                    <span class="cloud-badge" title="Nuvem Conectada">☁️</span>
-                    <button class="btn-header" onclick="exportData()" title="Salvar Backup">💾</button>
-                    <button class="btn-header" onclick="importData()" title="Abrir Backup">📂</button>
-                    <button class="btn-header" onclick="fazerLogout()" title="Sair do Sistema">🚪 Sair</button>
+                    <button class="btn-header" onclick="abrirModalExportar()" title="Exportar Backup">💾</button>
+                    <button class="btn-header" onclick="importData()" title="Abrir Backup JSON">📂</button>
+                    <button class="btn-header" onclick="fazerLogout()" title="Sair">🚪 Sair</button>
                     <input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(event)">
                 </div>
             </div>
         </header>
 
-        <!-- NAVEGAÇÃO DESKTOP / TABLET -->
+        <!-- NAVEGAÇÃO DESKTOP -->
         <nav class="desktop-nav">
             <div class="nav-tabs">
                 <button class="tab-btn active" id="tab-btn-home" onclick="switchTab(event, 'home')">🏠 Início</button>
-                <button class="tab-btn" id="tab-btn-giras" onclick="switchTab(event, 'giras')">📅 Giras</button>
+                <button class="tab-btn" id="tab-btn-giras" onclick="switchTab(event, 'giras')">📅 Giras & Festas</button>
                 <button class="tab-btn" id="tab-btn-filas" onclick="switchTab(event, 'filas')">📋 Visitantes</button>
-                <button class="tab-btn" id="tab-btn-festas" onclick="switchTab(event, 'festas')">🎉 Festas</button>
-                <button class="tab-btn" id="tab-btn-filhos" onclick="switchTab(event, 'filhos')">🌿 Filhos de Santo</button>
-                <button class="tab-btn" id="tab-btn-mensalidades" onclick="switchTab(event, 'mensalidades')">💰 Mensalidades</button>
+                <button class="tab-btn" id="tab-btn-filhos" onclick="switchTab(event, 'filhos')">🌿 Corrente</button>
+                <button class="tab-btn" id="tab-btn-mensalidades" onclick="switchTab(event, 'mensalidades')">💰 Financeiro</button>
                 <button class="tab-btn" id="tab-btn-estoque" onclick="switchTab(event, 'estoque')">📦 Estoque</button>
-                <button class="tab-btn" id="tab-btn-cantina" onclick="switchTab(event, 'cantina')">🥧 Cantina da Vó</button>
+                <button class="tab-btn" id="tab-btn-cantina" onclick="switchTab(event, 'cantina')">🥧 Cantina</button>
             </div>
         </nav>
 
-        <!-- NAVEGAÇÃO INFERIOR PARA DISPOSITIVOS MÓVEIS -->
+        <!-- NAVEGAÇÃO MÓVEL INFERIOR -->
         <div class="mobile-bottom-nav">
             <button class="mobile-nav-item active" id="mob-btn-home" onclick="abrirAbaDireta('home')">
                 <span class="icon">🏠</span>Início
             </button>
             <button class="mobile-nav-item" id="mob-btn-giras" onclick="abrirAbaDireta('giras')">
-                <span class="icon">📅</span>Giras
+                <span class="icon">📅</span>Trabalhos
             </button>
             <button class="mobile-nav-item" id="mob-btn-filas" onclick="abrirAbaDireta('filas')">
                 <span class="icon">📋</span>Visitantes
@@ -827,9 +1055,6 @@
             </button>
             <button class="mobile-nav-item" id="mob-btn-mensalidades" onclick="abrirAbaDireta('mensalidades')">
                 <span class="icon">💰</span>Financeiro
-            </button>
-            <button class="mobile-nav-item" id="mob-btn-cantina" onclick="abrirAbaDireta('cantina')">
-                <span class="icon">🥧</span>Cantina
             </button>
         </div>
 
@@ -843,10 +1068,7 @@
                     </div>
                     <div class="quick-stats-hero">
                         <div class="hero-pill">
-                            <span>☁️ Nuvem Ativa</span>
-                        </div>
-                        <div class="hero-pill">
-                            <span>👥 <strong id="lblTotalFilhosHome">0</strong> Filhos na Corrente</span>
+                            👥 <strong id="lblTotalFilhosHome">0</strong> Filhos na Casa
                         </div>
                     </div>
                 </div>
@@ -856,10 +1078,10 @@
                         <div>
                             <div class="app-card-top">
                                 <div class="app-icon">📅</div>
-                                <span class="app-card-badge" id="cardBadgeGiras">0 Giras</span>
+                                <span class="app-card-badge" id="cardBadgeGiras">0 Trabalhos</span>
                             </div>
-                            <div class="app-card-title">Giras</div>
-                            <div class="app-card-desc">Consulte a programação, agende novos trabalhos e controle o calendário da casa.</div>
+                            <div class="app-card-title">Giras & Festas</div>
+                            <div class="app-card-desc">Calendário de giras semanais, homenagens e eventos especiais do terreiro.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -868,22 +1090,10 @@
                         <div>
                             <div class="app-card-top">
                                 <div class="app-icon">📋</div>
-                                <span class="app-card-badge" id="cardBadgeVisitantes">0 Visitantes</span>
+                                <span class="app-card-badge" id="cardBadgeVisitantes">0 Presentes</span>
                             </div>
-                            <div class="app-card-title">Lista de Visitantes</div>
-                            <div class="app-card-desc">Acompanhe a chegada e registe a presença dos consulentes nas giras da semana.</div>
-                        </div>
-                        <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
-                    </div>
-
-                    <div class="app-card" onclick="abrirAbaDireta('festas')">
-                        <div>
-                            <div class="app-card-top">
-                                <div class="app-icon">🎉</div>
-                                <span class="app-card-badge" id="cardBadgeFestas">0 Eventos</span>
-                            </div>
-                            <div class="app-card-title">Festas e Homenagens</div>
-                            <div class="app-card-desc">Planeamento de grandes festas, listas de convidados e balanço financeiro dos eventos.</div>
+                            <div class="app-card-title">Visitantes</div>
+                            <div class="app-card-desc">Registro simples de presença para consulentes e lista de assistência das giras.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -895,7 +1105,7 @@
                                 <span class="app-card-badge" id="cardBadgeFilhos">0 Membros</span>
                             </div>
                             <div class="app-card-title">Filhos de Santo</div>
-                            <div class="app-card-desc">Cadastro completo da corrente, contactos, datas de aniversário e valores de mensalidade.</div>
+                            <div class="app-card-desc">Cadastro completo da corrente, contatos e datas de aniversário.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -904,10 +1114,10 @@
                         <div>
                             <div class="app-card-top">
                                 <div class="app-icon">💰</div>
-                                <span class="app-card-badge" id="cardBadgeMensalidades">R$ 0,00</span>
+                                <span class="app-card-badge badge-warning" id="cardBadgeMensalidades">Pendentes: R$ 0,00</span>
                             </div>
                             <div class="app-card-title">Mensalidades</div>
-                            <div class="app-card-desc">Gestão financeira do terreiro, mensalidades integradas com o consumo da cantina.</div>
+                            <div class="app-card-desc">Gestão financeira da corrente e mensalidades do mês vigente.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -919,7 +1129,7 @@
                                 <span class="app-card-badge" id="cardBadgeEstoque">0 Itens</span>
                             </div>
                             <div class="app-card-title">Estoque de Materiais</div>
-                            <div class="app-card-desc">Controlo de insumos da casa: velas, bebidas, louças e artigos para os rituais.</div>
+                            <div class="app-card-desc">Controle de insumos da casa: velas, bebidas e louças para os rituais.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -928,10 +1138,10 @@
                         <div>
                             <div class="app-card-top">
                                 <div class="app-icon">🥧</div>
-                                <span class="app-card-badge" id="cardBadgeCantina">R$ 0,00</span>
+                                <span class="app-card-badge badge-warning" id="cardBadgeCantina">Fiado: R$ 0,00</span>
                             </div>
                             <div class="app-card-title">Cantina da Vó</div>
-                            <div class="app-card-desc">Registo de vendas para filhos e consulentes, pagamentos à vista ou fiado.</div>
+                            <div class="app-card-desc">Registro de vendas de produtos e total fiado a receber.</div>
                         </div>
                         <span style="color: var(--primary-green); font-weight: bold; font-size: 0.85rem;">Abrir Módulo →</span>
                     </div>
@@ -941,86 +1151,147 @@
                     <h3>⚡ Atalhos Rápidos</h3>
                     <div class="actions-flex">
                         <button class="btn btn-primary" onclick="abrirAbaDireta('giras')">➕ Cadastrar Gira</button>
-                        <button class="btn btn-orange" onclick="abrirAbaDireta('filas')">✍️ Registar Presença</button>
-                        <button class="btn btn-primary" onclick="abrirAbaDireta('cantina')">🛒 Registar Venda</button>
+                        <button class="btn btn-orange" onclick="abrirAbaDireta('filas')">✍️ Registrar Presença</button>
+                        <button class="btn btn-primary" onclick="abrirAbaDireta('cantina')">🛒 Registrar Venda</button>
                         <button class="btn btn-secondary" onclick="abrirAbaDireta('filhos')">👤 Novo Filho de Santo</button>
                     </div>
                 </div>
             </div>
 
-            <!-- ABA 0: GIRAS -->
+            <!-- GIRAS & FESTAS -->
             <div id="giras" class="tab-content">
-                <div class="card">
-                    <div class="card-title">Adicionar Gira</div>
-                    <form id="formGira" class="form-grid" onsubmit="adicionarGiraSemanal(event)">
-                        <div class="form-group">
-                            <label>Nome / Linha da Gira</label>
-                            <input type="text" id="giraNome" class="form-control" required placeholder="Ex: Gira de Preto Velho / Gira de Baianos">
-                        </div>
-                        <div class="form-group">
-                            <label>Data da Gira</label>
-                            <input type="date" id="giraData" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Horário de Início</label>
-                            <input type="time" id="giraHora" class="form-control" value="20:00">
-                        </div>
-                        <div class="form-group" style="justify-content: flex-end;">
-                            <button type="submit" class="btn btn-primary">➕ Cadastrar Gira</button>
-                        </div>
-                    </form>
+                <div class="subnav-pills">
+                    <button class="subnav-btn active" id="btnSubnavGiras" onclick="alternarSubabaTrabalhos('giras')">📅 Giras Semanais</button>
+                    <button class="subnav-btn" id="btnSubnavFestas" onclick="alternarSubabaTrabalhos('festas')">🎉 Festas & Eventos</button>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">Calendário e Programação de Giras</div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Horário</th>
-                                    <th>Gira / Linha</th>
-                                    <th>Presentes Registrados</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tblGirasSemanais"></tbody>
-                        </table>
+                <!-- SUB-CONTEÚDO: GIRAS -->
+                <div id="subSeçaoGiras">
+                    <div class="card">
+                        <div class="card-title" id="tituloFormGira">Adicionar Gira</div>
+                        <form id="formGira" class="form-grid" onsubmit="salvarGiraSemanal(event)">
+                            <input type="hidden" id="giraIdEdit">
+                            <div class="form-group">
+                                <label>Nome / Linha da Gira</label>
+                                <input type="text" id="giraNome" class="form-control" required placeholder="Ex: Gira de Preto Velho">
+                            </div>
+                            <div class="form-group">
+                                <label>Data da Gira</label>
+                                <input type="date" id="giraData" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Horário de Início</label>
+                                <input type="time" id="giraHora" class="form-control" value="20:00">
+                            </div>
+                            <div class="form-group" style="justify-content: flex-end; gap: 8px; flex-direction: row; align-items: flex-end;">
+                                <button type="button" id="btnCancelarEditGira" class="btn btn-secondary" onclick="cancelarEdicaoGira()" style="display:none;">Cancelar</button>
+                                <button type="submit" id="btnSalvarGira" class="btn btn-primary">➕ Cadastrar Gira</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Calendário e Programação de Giras (Recentes primeiro)</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Horário</th>
+                                        <th>Gira / Linha</th>
+                                        <th>Presentes Registrados</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblGirasSemanais"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-CONTEÚDO: FESTAS -->
+                <div id="subSeçaoFestas" style="display: none;">
+                    <div class="card">
+                        <div class="card-title">Nova Festa ou Evento</div>
+                        <form id="formFesta" class="form-grid" onsubmit="adicionarFesta(event)">
+                            <div class="form-group">
+                                <label>Nome da Festa / Evento</label>
+                                <input type="text" id="festaNome" class="form-control" required placeholder="Ex: Festa de Cosme e Damião">
+                            </div>
+                            <div class="form-group">
+                                <label>Orixá / Entidade Homenageada</label>
+                                <input type="text" id="festaOrixa" class="form-control" placeholder="Ex: Erês / Iansã">
+                            </div>
+                            <div class="form-group">
+                                <label>Data Prevista</label>
+                                <input type="date" id="festaData" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Horário</label>
+                                <input type="time" id="festaHora" class="form-control" value="18:00">
+                            </div>
+                            <div class="form-group" style="justify-content: flex-end;">
+                                <button type="submit" class="btn btn-primary">🎉 Cadastrar Evento</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Resumo Financeiro dos Eventos</div>
+                        <div class="dashboard-grid">
+                            <div class="dash-card">
+                                <div class="title">Total Arrecadado</div>
+                                <div class="value" id="dashFestaArrecadado">R$ 0,00</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="title">Despesas Realizadas</div>
+                                <div class="value" id="dashFestaCustos" style="color: #ef4444;">R$ 0,00</div>
+                            </div>
+                            <div class="dash-card">
+                                <div class="title">Saldo Geral</div>
+                                <div class="value" id="dashFestaSaldo">R$ 0,00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Festas e Homenagens Agendadas</div>
+                        <div id="listaFestasContainer"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ABA 1: LISTA DE VISITANTES DA GIRA -->
+            <!-- VISITANTES -->
             <div id="filas" class="tab-content">
                 <div class="card">
                     <div class="card-title">
-                        <span>Lista de Visitantes</span>
+                        <span>✍️ Registrar Presença de Visitante</span>
                     </div>
                     <form id="formConsulente" class="form-grid" onsubmit="adicionarConsulente(event)">
                         <div class="form-group" style="grid-column: span 2;">
-                            <label>Selecione a Gira *</label>
+                            <label>Selecione o Trabalho (Gira) *</label>
                             <select id="cGiraId" class="form-control" required onchange="aoMudarGiraPresenca()">
-                                <option value="">-- Selecione uma Gira Cadastrada --</option>
+                                <option value="">-- Selecione a Gira --</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nome do Visitante *</label>
+                            <label>Nome do Visitante / Consulente *</label>
                             <input type="text" id="cNome" class="form-control" required placeholder="Ex: Maria da Silva">
                         </div>
                         <div class="form-group">
-                            <label>Telefone</label>
-                            <input type="text" id="cTel" class="form-control" placeholder="(11) 99999-9999" inputmode="tel">
+                            <label>Telefone para Contato</label>
+                            <input type="tel" id="cTel" class="form-control" placeholder="(11) 91234-5678" inputmode="tel" oninput="formatarTelefoneBR(this)" maxlength="15" autocomplete="tel">
                         </div>
                         <div class="form-group" style="justify-content: flex-end;">
-                            <button type="submit" class="btn btn-primary">✍️ Registrar Presença</button>
+                            <button type="submit" class="btn btn-primary">✍️ Confirmar Presença</button>
                         </div>
                     </form>
                 </div>
 
                 <div class="card">
                     <div class="card-title">
-                        <span>Livro de Visitas — <strong id="lblGiraSelecionadaNome">Selecione uma Gira acima</strong></span>
-                        <span id="badgeTotalGira" class="badge badge-green" style="font-size: 0.9rem;">0 Pessoas Presentes</span>
+                        <span>Livro de Visitas — <strong id="lblGiraSelecionadaNome">Selecione uma Gira</strong></span>
+                        <span id="badgeTotalGira" class="badge badge-green" style="font-size: 0.9rem;">0 Presentes</span>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -1038,88 +1309,12 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">📊 Histórico e Resumo de Presenças por Gira</div>
-                    <div id="historicoGirasContainer"></div>
+                    <div class="card-title">📊 Resumo de Visitantes por Gira</div>
+                    <div id="historicoGirasContainer" class="historico-grid"></div>
                 </div>
             </div>
 
-            <!-- ABA 2: FESTAS & EVENTOS -->
-            <div id="festas" class="tab-content">
-                <div class="card">
-                    <div class="card-title">Nova Festa</div>
-                    <form id="formFesta" class="form-grid" onsubmit="adicionarFesta(event)">
-                        <div class="form-group">
-                            <label>Nome da Festa / Evento</label>
-                            <input type="text" id="festaNome" class="form-control" required placeholder="Ex: Festa de Cosme e Damião">
-                        </div>
-                        <div class="form-group">
-                            <label>Orixá / Entidade Homenageada</label>
-                            <input type="text" id="festaOrixa" class="form-control" placeholder="Ex: Erês / Iansã / Ciganos">
-                        </div>
-                        <div class="form-group">
-                            <label>Data Prevista</label>
-                            <input type="date" id="festaData" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Horário</label>
-                            <input type="time" id="festaHora" class="form-control" value="18:00">
-                        </div>
-                        <div class="form-group" style="justify-content: flex-end;">
-                            <button type="submit" class="btn btn-primary">🎉 Cadastrar Festa</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Resumo Financeiro dos Eventos</div>
-                    <div class="dashboard-grid">
-                        <div class="dash-card">
-                            <div class="title">Total Arrecadado (Presenças)</div>
-                            <div class="value" id="dashFestaArrecadado" style="color: var(--accent-orange);">R$ 0,00</div>
-                        </div>
-                        <div class="dash-card">
-                            <div class="title">Despesas Realizadas</div>
-                            <div class="value" id="dashFestaCustos" style="color: var(--danger-red);">R$ 0,00</div>
-                        </div>
-                        <div class="dash-card">
-                            <div class="title">Saldo Geral dos Eventos</div>
-                            <div class="value" id="dashFestaSaldo">R$ 0,00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">
-                        <span>📋 Lista de Presença da Festa</span>
-                    </div>
-                    <form id="formPresencaFesta" class="form-grid" onsubmit="adicionarPresencaFesta(event)">
-                        <div class="form-group" style="grid-column: span 2;">
-                            <label>Selecione a Festa *</label>
-                            <select id="pfFestaId" class="form-control" required onchange="renderFestas()">
-                                <option value="">-- Selecione uma Festa Cadastrada --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" id="pfNome" class="form-control" required placeholder="Ex: Ana Maria">
-                        </div>
-                        <div class="form-group">
-                            <label>Telefone</label>
-                            <input type="text" id="pfTel" class="form-control" placeholder="(11) 99999-9999" inputmode="tel">
-                        </div>
-                        <div class="form-group" style="justify-content: flex-end;">
-                            <button type="submit" class="btn btn-primary">✍️ Confirmar Presença</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Festas e Homenagens Agendadas</div>
-                    <div id="listaFestasContainer"></div>
-                </div>
-            </div>
-
-            <!-- ABA 3: FILHOS DE SANTO -->
+            <!-- FILHOS DE SANTO -->
             <div id="filhos" class="tab-content">
                 <div class="card">
                     <div class="card-title" id="tituloFormFilho">Cadastrar Filho de Santo</div>
@@ -1139,7 +1334,7 @@
                         </div>
                         <div class="form-group" style="justify-content: flex-end; gap: 8px; flex-direction: row; align-items: flex-end;">
                             <button type="button" id="btnCancelarEditFilho" class="btn btn-secondary" onclick="cancelarEdicaoFilho()" style="display:none;">Cancelar</button>
-                            <button type="submit" id="btnSalvarFilho" class="btn btn-primary">Cadastrar Filho</button>
+                            <button type="submit" id="btnSalvarFilho" class="btn btn-primary">Salvar Filho</button>
                         </div>
                     </form>
                 </div>
@@ -1162,23 +1357,21 @@
                 </div>
             </div>
 
-            <!-- ABA 4: MENSALIDADES -->
+            <!-- MENSALIDADES -->
             <div id="mensalidades" class="tab-content">
                 <div class="card">
                     <div class="card-title">
                         <span>Controle Financeiro da Corrente</span>
-                        <button class="btn btn-orange btn-sm" onclick="irParaMesAtual()">📅 Ir para Mês Vigente</button>
+                        <button class="btn btn-orange btn-sm" onclick="irParaMesAtual()">📅 Mês Vigente</button>
                     </div>
 
-                    <div class="nav-mes-bar">
-                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(-1)">◀ Mês Anterior</button>
-                        
+                    <div class="nav-mes-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(-1)">◀ Anterior</button>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <label style="font-size: 0.85rem; font-weight: 600;">Selecione o Mês / Ano:</label>
+                            <label style="font-size: 0.85rem; font-weight: 600;">Mês:</label>
                             <input type="month" id="mesRefSelect" class="form-control" style="width: auto; padding: 6px 12px; font-weight: bold;" onchange="aoMudarMesSelect()">
                         </div>
-
-                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(1)">Próximo Mês ▶</button>
+                        <button class="btn btn-secondary btn-sm" onclick="navegarMes(1)">Próximo ▶</button>
                     </div>
 
                     <div class="dashboard-grid">
@@ -1187,19 +1380,17 @@
                             <div class="value" id="dashMensalidadePrevisto">R$ 0,00</div>
                         </div>
                         <div class="dash-card">
-                            <div class="title">Total Arrecadado / Pago</div>
-                            <div class="value" id="dashMensalidadeRecebido" style="color: var(--success-green);">R$ 0,00</div>
+                            <div class="title">Total Arrecadado</div>
+                            <div class="value" id="dashMensalidadeRecebido" style="color: #10b981;">R$ 0,00</div>
                         </div>
                         <div class="dash-card">
                             <div class="title">Total Pendente</div>
-                            <div class="value" id="dashMensalidadePendente" style="color: var(--danger-red);">R$ 0,00</div>
+                            <div class="value" id="dashMensalidadePendente" style="color: #ef4444;">R$ 0,00</div>
                         </div>
                     </div>
 
                     <div style="margin-top: 15px;">
-                        <h4 style="color: var(--primary-green-dark); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>📋 Lista Geral de Mensalidades dos Filhos de Santo</span>
-                        </h4>
+                        <h4 style="color: #1e293b; margin-bottom: 12px; font-weight: 700;">📋 Lista Geral de Mensalidades</h4>
                         <div class="table-responsive">
                             <table>
                                 <thead>
@@ -1209,7 +1400,7 @@
                                         <th>Mensalidade (R$)</th>
                                         <th>Cantina da Vó</th>
                                         <th>Total a Pagar</th>
-                                        <th>Status do Pagamento</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblMensalidadesUnificada"></tbody>
@@ -1219,14 +1410,14 @@
                 </div>
             </div>
 
-            <!-- ABA 5: ESTOQUE -->
+            <!-- ESTOQUE -->
             <div id="estoque" class="tab-content">
                 <div class="card">
                     <div class="card-title">Novo Item no Estoque</div>
                     <form id="formEstoque" class="form-grid" onsubmit="adicionarItemEstoque(event)">
                         <div class="form-group">
                             <label>Nome do Insumo</label>
-                            <input type="text" id="eNome" class="form-control" required placeholder="Ex: Vela Branca / Guaraná">
+                            <input type="text" id="eNome" class="form-control" required placeholder="Ex: Vela Branca">
                         </div>
                         <div class="form-group">
                             <label>Categoria *</label>
@@ -1248,11 +1439,8 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">
-                        <span>Itens e Materiais do Terreiro</span>
-                    </div>
-
-                    <div class="filter-bar">
+                    <div class="card-title">Itens e Materiais do Terreiro</div>
+                    <div class="filter-bar" style="display:flex; gap:6px; margin-bottom:15px; flex-wrap:wrap;">
                         <button class="btn btn-secondary btn-sm active-filter" onclick="filtrarEstoque('Todos', this)">Todos</button>
                         <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Bebidas', this)">🍹 Bebidas</button>
                         <button class="btn btn-secondary btn-sm" onclick="filtrarEstoque('Louças', this)">🍽️ Louças</button>
@@ -1276,7 +1464,7 @@
                 </div>
             </div>
 
-            <!-- ABA 6: CANTINA DA VÓ -->
+            <!-- CANTINA -->
             <div id="cantina" class="tab-content">
                 <div class="card">
                     <div class="card-title">🥧 Registrar Venda na Cantina</div>
@@ -1310,7 +1498,7 @@
                         </div>
                         <div class="form-group">
                             <label>Valor Total (R$)</label>
-                            <input type="text" id="cantinaValorTotal" class="form-control" readonly style="background-color: #f0f0f0; font-weight: bold;">
+                            <input type="text" id="cantinaValorTotal" class="form-control" readonly style="background-color: #f8fafc; font-weight: bold;">
                         </div>
                         <div class="form-group">
                             <label>Forma de Pagamento *</label>
@@ -1329,12 +1517,12 @@
                     <div class="card-title">📊 Resumo Financeiro da Cantina</div>
                     <div class="dashboard-grid">
                         <div class="dash-card">
-                            <div class="title">Total Recebido (Pago)</div>
-                            <div class="value" id="dashCantinaRecebido" style="color: var(--success-green);">R$ 0,00</div>
+                            <div class="title">Total Recebido</div>
+                            <div class="value" id="dashCantinaRecebido" style="color: #10b981;">R$ 0,00</div>
                         </div>
                         <div class="dash-card">
-                            <div class="title">Total Fiado (Pendente)</div>
-                            <div class="value" id="dashCantinaFiado" style="color: var(--danger-red);">R$ 0,00</div>
+                            <div class="title">Total Fiado (A Receber)</div>
+                            <div class="value" id="dashCantinaFiado" style="color: #ef4444;">R$ 0,00</div>
                         </div>
                         <div class="dash-card">
                             <div class="title">Faturamento Total</div>
@@ -1364,6 +1552,28 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- MODAL DE EXPORTAÇÃO SIMPLIFICADO -->
+    <div id="modalExportar" class="modal-overlay">
+        <div class="modal-box">
+            <h3>💾 Exportar Backup e Relatórios</h3>
+            <p>Escolha o formato em que deseja exportar os dados do terreiro:</p>
+
+            <button class="modal-option-btn" onclick="exportDataJSON()">
+                <span>📄 Backup em JSON</span>
+                <small style="color:var(--primary-green);">Estrutura completa</small>
+            </button>
+
+            <button class="modal-option-btn" onclick="exportarExcelComAbas()">
+                <span>📊 Backup em Excel (.xls)</span>
+                <small style="color:var(--accent-orange);">Relatório formatado</small>
+            </button>
+
+            <div style="display:flex; justify-content:flex-end; margin-top: 15px;">
+                <button class="btn btn-secondary btn-sm" onclick="fecharModalExportar()">Cancelar</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1433,15 +1643,25 @@
             cantinaVendas: []
         };
 
-        let filtroEstoqueCategoria = 'Todos';
+        window.sanitizarAppState = function() {
+            if (!window.appState || typeof window.appState !== 'object') window.appState = {};
+            if (!Array.isArray(window.appState.girasSemanais)) window.appState.girasSemanais = [];
+            if (!Array.isArray(window.appState.filhos)) {
+                window.appState.filhos = Array.isArray(window.appState.filhas) ? window.appState.filhas : [];
+            }
+            if (!Array.isArray(window.appState.consulentes)) window.appState.consulentes = [];
+            if (!window.appState.mensalidades || typeof window.appState.mensalidades !== 'object') window.appState.mensalidades = {};
+            if (!Array.isArray(window.appState.estoque)) window.appState.estoque = [];
+            if (!Array.isArray(window.appState.festas)) window.appState.festas = [];
+            if (!Array.isArray(window.appState.cantinaVendas)) window.appState.cantinaVendas = [];
+        };
 
+        let filtroEstoqueCategoria = 'Todos';
         const NOMES_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         const MESES_ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
         window.inicializarSistema = function() {
-            if (window.iniciarEscutaNuvem) {
-                window.iniciarEscutaNuvem();
-            }
+            if (window.iniciarEscutaNuvem) window.iniciarEscutaNuvem();
 
             irParaMesAtual();
             document.getElementById('giraData').value = new Date().toISOString().substring(0,10);
@@ -1453,11 +1673,10 @@
 
         let debounceTimer = null;
         function saveData() {
+            window.sanitizarAppState();
             if (window.salvarEstadoNuvem) {
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    window.salvarEstadoNuvem();
-                }, 300);
+                debounceTimer = setTimeout(() => { window.salvarEstadoNuvem(); }, 300);
             } else {
                 localStorage.setItem('gestao_axe_data', JSON.stringify(appState));
             }
@@ -1465,11 +1684,11 @@
         }
 
         function renderAll() {
+            window.sanitizarAppState();
             renderHomeBadges();
             renderGirasSemanais();
             popularSelectGiras();
             renderConsulentes();
-            popularSelectFestas();
             renderFestas();
             renderFilhos();
             renderMensalidades();
@@ -1483,7 +1702,8 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
             
-            document.getElementById(tabId).classList.add('active');
+            const targetContent = document.getElementById(tabId);
+            if(targetContent) targetContent.classList.add('active');
             
             const targetBtn = document.getElementById(`tab-btn-${tabId}`);
             if (targetBtn) targetBtn.classList.add('active');
@@ -1494,8 +1714,25 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function switchTab(evt, tabId) {
-            abrirAbaDireta(tabId);
+        function switchTab(evt, tabId) { abrirAbaDireta(tabId); }
+
+        function alternarSubabaTrabalhos(tipo) {
+            const btnGiras = document.getElementById('btnSubnavGiras');
+            const btnFestas = document.getElementById('btnSubnavFestas');
+            const secGiras = document.getElementById('subSeçaoGiras');
+            const secFestas = document.getElementById('subSeçaoFestas');
+
+            if (tipo === 'giras') {
+                btnGiras.classList.add('active');
+                btnFestas.classList.remove('active');
+                secGiras.style.display = 'block';
+                secFestas.style.display = 'none';
+            } else {
+                btnFestas.classList.add('active');
+                btnGiras.classList.remove('active');
+                secFestas.style.display = 'block';
+                secGiras.style.display = 'none';
+            }
         }
 
         function verificarAniversariantesDoDia() {
@@ -1505,25 +1742,17 @@
 
             const aniversariantes = appState.filhos.filter(f => {
                 if (!f.aniversario) return false;
-                
                 const str = f.aniversario.trim().toLowerCase();
                 if (str.includes('/')) {
                     const partes = str.split('/');
                     const d = parseInt(partes[0]);
                     const mStr = partes[1];
-                    let m = -1;
-                    if (!isNaN(mStr)) {
-                        m = parseInt(mStr) - 1;
-                    } else {
-                        m = MESES_ABREV.indexOf(mStr.substring(0,3));
-                    }
+                    let m = !isNaN(mStr) ? parseInt(mStr) - 1 : MESES_ABREV.indexOf(mStr.substring(0,3));
                     return (d === diaHoje && m === mesHojeIdx);
                 } else if (str.includes('-')) {
                     const partes = str.split('-');
                     if (partes.length === 3) {
-                        const d = parseInt(partes[2]);
-                        const m = parseInt(partes[1]) - 1;
-                        return (d === diaHoje && m === mesHojeIdx);
+                        return (parseInt(partes[2]) === diaHoje && (parseInt(partes[1]) - 1) === mesHojeIdx);
                     }
                 }
                 return false;
@@ -1536,61 +1765,100 @@
         }
 
         function renderHomeBadges() {
+            const totalTrabalhos = appState.girasSemanais.length + appState.festas.length;
             document.getElementById('lblTotalFilhosHome').innerText = appState.filhos.length;
-            document.getElementById('cardBadgeGiras').innerText = `${appState.girasSemanais.length} Giras`;
-            document.getElementById('cardBadgeVisitantes').innerText = `${appState.consulentes.length} Registros`;
-            document.getElementById('cardBadgeFestas').innerText = `${appState.festas.length} Eventos`;
+            document.getElementById('cardBadgeGiras').innerText = `${totalTrabalhos} Programados`;
+            document.getElementById('cardBadgeVisitantes').innerText = `${appState.consulentes.length} Visitantes`;
             document.getElementById('cardBadgeFilhos').innerText = `${appState.filhos.length} Filhos`;
             
-            const totalCantina = (appState.cantinaVendas || []).reduce((sum, v) => sum + (v.total || 0), 0);
-            document.getElementById('cardBadgeCantina').innerText = `R$ ${totalCantina.toFixed(2)}`;
+            const totalFiadoCantina = appState.cantinaVendas
+                .filter(v => v.status === 'Fiado')
+                .reduce((sum, v) => sum + (v.total || 0), 0);
+            document.getElementById('cardBadgeCantina').innerText = `Fiado: R$ ${totalFiadoCantina.toFixed(2)}`;
 
-            const estoqueTotal = (appState.estoque || []).reduce((sum, i) => sum + (i.qtd || 0), 0);
+            const estoqueTotal = appState.estoque.reduce((sum, i) => sum + (i.qtd || 0), 0);
             document.getElementById('cardBadgeEstoque').innerText = `${estoqueTotal} itens`;
 
-            const totalPrevistoMensal = appState.filhos.reduce((sum, f) => sum + (f.valor || 50), 0);
-            document.getElementById('cardBadgeMensalidades').innerText = `R$ ${totalPrevistoMensal.toFixed(2)}/mês`;
+            const hoje = new Date();
+            const mesChaveVigente = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
+            const statusMesVigente = appState.mensalidades[mesChaveVigente] || {};
+            
+            let totalPendenteVigente = 0;
+            appState.filhos.forEach(f => {
+                const reg = statusMesVigente[f.id];
+                const estaPago = typeof reg === 'object' ? reg.pago : !!reg;
+                if (!estaPago) {
+                    const valorMensal = f.valor !== undefined ? f.valor : 50;
+                    const consumoCantina = calcularConsumoCantinaFilho(f.nome);
+                    totalPendenteVigente += (valorMensal + consumoCantina);
+                }
+            });
+
+            document.getElementById('cardBadgeMensalidades').innerText = `Pendentes: R$ ${totalPendenteVigente.toFixed(2)}`;
         }
 
-        /* --- LÓGICA: GIRAS --- */
-        function adicionarGiraSemanal(e) {
+        function salvarGiraSemanal(e) {
             e.preventDefault();
+            const idEdit = document.getElementById('giraIdEdit').value;
             const nome = document.getElementById('giraNome').value;
             const data = document.getElementById('giraData').value;
             const hora = document.getElementById('giraHora').value;
 
-            const novaGira = {
-                id: Date.now(),
-                nome: nome,
-                data: data,
-                hora: hora,
-                obs: ''
-            };
+            if (idEdit) {
+                const gira = appState.girasSemanais.find(g => g.id == idEdit);
+                if (gira) { gira.nome = nome; gira.data = data; gira.hora = hora; }
+            } else {
+                const novaGira = { id: Date.now(), nome: nome, data: data, hora: hora, obs: '' };
+                appState.girasSemanais.push(novaGira);
+                document.getElementById('cGiraId').value = novaGira.id;
+            }
 
-            appState.girasSemanais.push(novaGira);
-
-            document.getElementById('giraNome').value = '';
+            cancelarEdicaoGira();
             saveData();
-            
-            document.getElementById('cGiraId').value = novaGira.id;
             renderConsulentes();
         }
 
+        function editarGiraSemanal(id) {
+            const gira = appState.girasSemanais.find(g => g.id === id);
+            if (!gira) return;
+            document.getElementById('giraIdEdit').value = gira.id;
+            document.getElementById('giraNome').value = gira.nome || '';
+            document.getElementById('giraData').value = gira.data || '';
+            document.getElementById('giraHora').value = gira.hora || '20:00';
+            document.getElementById('tituloFormGira').innerText = 'Editar Gira';
+            document.getElementById('btnSalvarGira').innerText = '✏️ Atualizar Gira';
+            document.getElementById('btnCancelarEditGira').style.display = 'inline-flex';
+            document.getElementById('formGira').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelarEdicaoGira() {
+            document.getElementById('giraIdEdit').value = '';
+            document.getElementById('giraNome').value = '';
+            document.getElementById('giraData').value = new Date().toISOString().substring(0,10);
+            document.getElementById('giraHora').value = '20:00';
+            document.getElementById('tituloFormGira').innerText = 'Adicionar Gira';
+            document.getElementById('btnSalvarGira').innerText = '➕ Cadastrar Gira';
+            document.getElementById('btnCancelarEditGira').style.display = 'none';
+        }
+
         function removerGiraSemanal(id) {
-            if(confirm("Tem certeza que deseja remover esta gira? Os registros de presença vinculados a ela serão mantidos.")) {
+            if(confirm("Tem certeza que deseja remover esta gira?")) {
                 appState.girasSemanais = appState.girasSemanais.filter(g => g.id !== id);
+                if (document.getElementById('giraIdEdit').value == id) cancelarEdicaoGira();
                 saveData();
             }
         }
 
+        /* --- GIRAS SEMANAIS ORDENADAS COM A MAIS RECENTE PRIMEIRO --- */
         function renderGirasSemanais() {
             const tbody = document.getElementById('tblGirasSemanais');
             tbody.innerHTML = '';
-
-            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+            
+            // Ordenação Decrescente (Mais recente primeiro)
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => (b.data || '').localeCompare(a.data || ''));
 
             if(girasOrdenadas.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhuma gira cadastrada. Agende a primeira gira no formulário acima!</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #64748b;">Nenhuma gira cadastrada.</td></tr>';
                 return;
             }
 
@@ -1605,7 +1873,8 @@
                         <td><strong>${gira.nome}</strong></td>
                         <td><span class="badge badge-green">${totalPresentes} Pessoas</span></td>
                         <td>
-                            <button class="btn btn-danger btn-sm" onclick="removerGiraSemanal(${gira.id})">Excluir</button>
+                            <button class="btn btn-orange btn-sm" onclick="editarGiraSemanal(${gira.id})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="removerGiraSemanal(${gira.id})" style="margin-left: 4px;">Excluir</button>
                         </td>
                     </tr>
                 `;
@@ -1621,9 +1890,8 @@
         function popularSelectGiras() {
             const select = document.getElementById('cGiraId');
             const valAtual = select.value;
-            select.innerHTML = '<option value="">-- Selecione uma Gira Cadastrada --</option>';
-
-            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+            select.innerHTML = '<option value="">-- Selecione a Gira --</option>';
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => (b.data || '').localeCompare(a.data || ''));
 
             girasOrdenadas.forEach(g => {
                 const dataFmt = g.data ? g.data.split('-').reverse().join('/') : '';
@@ -1637,27 +1905,18 @@
             }
         }
 
-        /* --- LÓGICA: LISTA DE VISITANTES --- */
-        function aoMudarGiraPresenca() {
-            renderConsulentes();
-        }
+        function aoMudarGiraPresenca() { renderConsulentes(); }
 
         function adicionarConsulente(e) {
             e.preventDefault();
             const giraId = document.getElementById('cGiraId').value;
-            if(!giraId) {
-                alert("Por favor, selecione uma Gira no menu suspenso!");
-                return;
-            }
+            if(!giraId) { alert("Por favor, selecione uma Gira!"); return; }
 
-            const nome = document.getElementById('cNome').value;
-            const tel = document.getElementById('cTel').value;
-            
             appState.consulentes.push({
                 id: Date.now(),
                 giraId: giraId,
-                nome: nome,
-                tel: tel
+                nome: document.getElementById('cNome').value,
+                tel: document.getElementById('cTel').value
             });
 
             document.getElementById('cNome').value = '';
@@ -1666,17 +1925,17 @@
         }
 
         function removerConsulente(id) {
-            if(confirm("Remover este visitante da lista de presenças?")) {
+            if(confirm("Remover este visitante?")) {
                 appState.consulentes = appState.consulentes.filter(x => x.id !== id);
                 saveData();
             }
         }
 
+        /* --- HISTÓRICO DE VISITANTES COM NOVA VISUALIZAÇÃO INTUITIVA --- */
         function renderConsulentes() {
             const giraId = document.getElementById('cGiraId').value;
             const tbody = document.getElementById('tblPresencaGira');
             tbody.innerHTML = '';
-
             const giraAtual = appState.girasSemanais.find(g => g.id == giraId);
 
             if (giraAtual) {
@@ -1689,7 +1948,7 @@
             const visitantesDaGira = appState.consulentes.filter(c => c.giraId == giraId);
 
             if(visitantesDaGira.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum visitante registrado para esta gira ainda.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: #64748b;">Nenhum visitante registrado nesta gira.</td></tr>';
             } else {
                 visitantesDaGira.forEach((c, idx) => {
                     tbody.innerHTML += `
@@ -1697,23 +1956,21 @@
                             <td><strong>${idx + 1}</strong></td>
                             <td>${c.nome}</td>
                             <td>${c.tel || '-'}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" onclick="removerConsulente(${c.id})">Excluir</button>
-                            </td>
+                            <td><button class="btn btn-danger btn-sm" onclick="removerConsulente(${c.id})">Excluir</button></td>
                         </tr>
                     `;
                 });
             }
 
-            document.getElementById('badgeTotalGira').innerText = `${visitantesDaGira.length} Pessoas Presentes`;
-
+            document.getElementById('badgeTotalGira').innerText = `${visitantesDaGira.length} Presentes`;
+            
+            // Nova Renderização Resumida e Intuitiva por Cards
             const historicoContainer = document.getElementById('historicoGirasContainer');
             historicoContainer.innerHTML = '';
-
-            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => b.data.localeCompare(a.data));
+            const girasOrdenadas = [...appState.girasSemanais].sort((a,b) => (b.data || '').localeCompare(a.data || ''));
 
             if(girasOrdenadas.length === 0) {
-                historicoContainer.innerHTML = '<p style="color: var(--text-muted); font-size:0.9rem;">Cadastre as giras da casa na aba "Giras".</p>';
+                historicoContainer.innerHTML = '<p style="color:#64748b; font-size:0.85rem;">Nenhuma gira registrada para apresentar histórico.</p>';
             }
 
             girasOrdenadas.forEach(gira => {
@@ -1722,249 +1979,216 @@
                 const ativa = (gira.id == giraId);
 
                 historicoContainer.innerHTML += `
-                    <div class="gira-summary-card" style="${ativa ? 'border-left: 4px solid var(--primary-green); background:#f0f7f0;' : ''}">
+                    <div class="historico-card ${ativa ? 'active' : ''}" onclick="irParaPresencaGira(${gira.id})">
                         <div>
-                            <strong>${gira.nome} — ${dataFmt}</strong>
-                            <div style="font-size:0.8rem; color: var(--text-muted);">${total} ${total === 1 ? 'pessoa' : 'pessoas'}</div>
+                            <div style="font-weight: 700; color: var(--primary-dark); font-size: 0.95rem;">${gira.nome}</div>
+                            <div style="font-size:0.78rem; color: #64748b;">📅 ${dataFmt}</div>
                         </div>
-                        <button class="btn ${ativa ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="irParaPresencaGira(${gira.id})">
-                            ${ativa ? '✓ Atual' : 'Ver'}
-                        </button>
+                        <span class="historico-count">${total}</span>
                     </div>
                 `;
             });
         }
 
-        /* --- LÓGICA: FESTAS & EVENTOS --- */
         function adicionarFesta(e) {
             e.preventDefault();
-            const nome = document.getElementById('festaNome').value;
-            const orixa = document.getElementById('festaOrixa').value;
-            const data = document.getElementById('festaData').value;
-            const hora = document.getElementById('festaHora').value;
-
-            const novaFesta = {
+            appState.festas.push({
                 id: Date.now(),
-                nome: nome,
-                orixa: orixa,
-                data: data,
-                hora: hora,
+                nome: document.getElementById('festaNome').value,
+                orixa: document.getElementById('festaOrixa').value,
+                data: document.getElementById('festaData').value,
+                hora: document.getElementById('festaHora').value,
                 lancamentos: [],
                 presencas: []
-            };
-
-            appState.festas.push(novaFesta);
+            });
 
             document.getElementById('festaNome').value = '';
             document.getElementById('festaOrixa').value = '';
             saveData();
-            
-            document.getElementById('pfFestaId').value = novaFesta.id;
-            renderFestas();
         }
 
         function removerFesta(id) {
-            if(confirm("Deseja mesmo remover esta festa e todo seu histórico financeiro e de presença?")) {
+            if(confirm("Deseja remover esta festa?")) {
                 appState.festas = appState.festas.filter(x => x.id !== id);
                 saveData();
             }
         }
 
-        function popularSelectFestas() {
-            const select = document.getElementById('pfFestaId');
-            if(!select) return;
-            const valAtual = select.value;
-            select.innerHTML = '<option value="">-- Selecione uma Festa Cadastrada --</option>';
-
-            const festasOrdenadas = [...appState.festas].sort((a,b) => (b.data || '').localeCompare(a.data || ''));
-
-            festasOrdenadas.forEach(f => {
-                const dataFmt = f.data ? f.data.split('-').reverse().join('/') : 'Data a definir';
-                select.innerHTML += `<option value="${f.id}">${f.nome} (${dataFmt})</option>`;
-            });
-
-            if(valAtual && appState.festas.some(f => f.id == valAtual)) {
-                select.value = valAtual;
-            } else if(festasOrdenadas.length > 0) {
-                select.value = festasOrdenadas[0].id;
-            }
-        }
-
-        function adicionarPresencaFesta(e) {
-            e.preventDefault();
-            const festaId = document.getElementById('pfFestaId').value;
-            if(!festaId) {
-                alert("Selecione uma festa para registrar a presença!");
-                return;
-            }
-
-            const nome = document.getElementById('pfNome').value;
-            const tel = document.getElementById('pfTel').value;
-
-            const festa = appState.festas.find(f => f.id == festaId);
-            if(festa) {
-                if(!festa.presencas) festa.presencas = [];
-                festa.presencas.push({
-                    id: Date.now(),
-                    nome: nome,
-                    tel: tel
-                });
-                
-                document.getElementById('pfNome').value = '';
-                document.getElementById('pfTel').value = '';
-                saveData();
-            }
-        }
-
-        function removerPresencaFesta(festaId, presencaId) {
-            const festa = appState.festas.find(f => f.id == festaId);
-            if(festa && festa.presencas) {
-                festa.presencas = festa.presencas.filter(p => p.id !== presencaId);
-                saveData();
-            }
-        }
-
         function adicionarDespesaFesta(festaId) {
-            const desc = prompt("Descrição da despesa (ex: Compra de Flores, Gelo):");
+            const desc = prompt("Descrição da despesa:");
             if (!desc) return;
             const valor = parseFloat(prompt("Valor (R$):", "0.00")) || 0;
-
             const festa = appState.festas.find(f => f.id === festaId);
+            
             if(festa) {
-                if(!festa.lancamentos) festa.lancamentos = [];
-                festa.lancamentos.push({
-                    id: Date.now(),
-                    desc: desc,
-                    valor: valor,
-                    tipo: 'Despesa'
-                });
+                if(!Array.isArray(festa.lancamentos)) festa.lancamentos = [];
+                festa.lancamentos.push({ id: Date.now(), desc: desc, valor: valor, tipo: 'Despesa' });
                 saveData();
             }
         }
 
         function removerLancamentoFesta(festaId, lancId) {
             const festa = appState.festas.find(f => f.id === festaId);
-            if(festa && festa.lancamentos) {
+            if(festa && Array.isArray(festa.lancamentos)) {
                 festa.lancamentos = festa.lancamentos.filter(l => l.id !== lancId);
                 saveData();
             }
         }
 
+        // Formata telefones brasileiros enquanto o usuário digita: (11) 91234-5678
+        function formatarTelefoneBR(campo) {
+            const numeros = campo.value.replace(/\D/g, '').slice(0, 11);
+            if (numeros.length <= 2) {
+                campo.value = numeros.length ? `(${numeros}` : '';
+            } else if (numeros.length <= 6) {
+                campo.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
+            } else if (numeros.length <= 10) {
+                campo.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6)}`;
+            } else {
+                campo.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+            }
+        }
+
+        /* LISTA DE PRESENÇA DE FESTAS — MESMO PADRÃO DO LIVRO DE VISITAS */
+        function adicionarPresencaFesta(e, festaId) {
+            e.preventDefault();
+            const form = e.target;
+            const nome = form.elements.nome.value.trim();
+            const telefone = form.elements.tel.value.trim();
+            if (!nome) {
+                alert("Informe o nome do participante.");
+                return;
+            }
+
+            const festa = appState.festas.find(f => f.id === festaId);
+            if (festa) {
+                if (!Array.isArray(festa.presencas)) festa.presencas = [];
+                festa.presencas.push({
+                    id: Date.now(),
+                    nome: nome,
+                    tel: telefone
+                });
+                saveData();
+            }
+        }
+
+        function removerPresencaFesta(festaId, presencaId) {
+            const festa = appState.festas.find(f => f.id === festaId);
+            if(festa && Array.isArray(festa.presencas)) {
+                festa.presencas = festa.presencas.filter(p => p.id !== presencaId);
+                saveData();
+            }
+        }
+
+        /* --- FESTAS COM NOME EM NEGRITO, BOTÃO EXCLUIR ALINHADO À DIREITA E LISTA DE PRESENÇA --- */
         function renderFestas() {
-            popularSelectFestas();
             const container = document.getElementById('listaFestasContainer');
             container.innerHTML = '';
-
             let totalArrecadado = 0;
             let totalCustos = 0;
 
             if (appState.festas.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 15px;">Nenhuma festa cadastrada no momento.</p>';
+                container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 15px;">Nenhuma festa cadastrada.</p>';
             }
 
             appState.festas.forEach(festa => {
                 let arrecadado = (festa.presencas || []).length * 35.00;
-                let despesas = 0;
-
-                (festa.lancamentos || []).forEach(l => {
-                    despesas += l.valor;
-                });
-
+                let despesas = (festa.lancamentos || []).reduce((sum, l) => sum + (l.valor || 0), 0);
                 totalArrecadado += arrecadado;
                 totalCustos += despesas;
-
                 const saldo = arrecadado - despesas;
 
                 let lancamentosHtml = (festa.lancamentos || []).map(l => `
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding: 4px 0; border-bottom: 1px dashed #eee;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding: 4px 0; border-bottom: 1px dashed #e2e8f0;">
                         <span>🔴 ${l.desc}</span>
-                        <span><strong>R$ ${l.valor.toFixed(2)}</strong> <a href="#" onclick="removerLancamentoFesta(${festa.id}, ${l.id})" style="color:red; text-decoration:none; margin-left:8px;">✕</a></span>
+                        <span><strong>R$ ${(l.valor || 0).toFixed(2)}</strong> <a href="#" onclick="removerLancamentoFesta(${festa.id}, ${l.id})" style="color:red; text-decoration:none; margin-left:8px;">✕</a></span>
                     </div>
                 `).join('');
 
-                let presencasHtml = (festa.presencas || []).map((p, i) => `
-                    <tr style="font-size:0.85rem;">
-                        <td style="padding: 6px;"><strong>${i + 1}</strong></td>
-                        <td style="padding: 6px;">${p.nome}</td>
-                        <td style="padding: 6px;">${p.tel || '-'}</td>
-                        <td style="padding: 6px; color: var(--accent-orange); font-weight: bold;">R$ 35,00</td>
-                        <td style="padding: 6px; text-align: right;"><a href="#" onclick="removerPresencaFesta(${festa.id}, ${p.id})" style="color:red; text-decoration:none;">Excluir</a></td>
+                let presencasHtml = (festa.presencas || []).map((p, idx) => `
+                    <tr>
+                        <td><strong>${idx + 1}</strong></td>
+                        <td>${p.nome || '-'}</td>
+                        <td>${p.tel || '-'}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm" onclick="removerPresencaFesta(${festa.id}, ${p.id})">Excluir</button></td>
                     </tr>
                 `).join('');
 
                 container.innerHTML += `
                     <div class="festa-item-card">
+                        <!-- HEADER COM NOME EM NEGRITO E BOTÃO ALINHADO À DIREITA -->
                         <div class="festa-header">
                             <div>
-                                <span class="festa-title-text">${festa.nome}</span>
-                                ${festa.orixa ? `<span class="badge badge-orange" style="margin-left: 6px;">${festa.orixa}</span>` : ''}
-                                <div style="font-size:0.78rem; color: var(--text-muted);">Data: ${festa.data ? festa.data.split('-').reverse().join('/') : 'A definir'}</div>
+                                <strong style="font-size:1.15rem; color:var(--primary-dark); font-weight:800;">${festa.nome}</strong>
+                                ${festa.orixa ? `<span class="badge badge-orange" style="margin-left: 8px;">${festa.orixa}</span>` : ''}
+                                <div style="font-size:0.8rem; color: #64748b; margin-top:2px;">📅 Data: ${festa.data ? festa.data.split('-').reverse().join('/') : ''} às ${festa.hora || ''}</div>
                             </div>
-                            <div>
-                                <button class="btn btn-danger btn-sm" onclick="removerFesta(${festa.id})">Excluir</button>
-                            </div>
+                            <button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="removerFesta(${festa.id})">Excluir</button>
                         </div>
 
-                        <div class="dashboard-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
-                            <div class="dash-card">
-                                <div class="title">Arrecadado</div>
-                                <div class="value" style="font-size:0.95rem; color: var(--accent-orange);">R$ ${arrecadado.toFixed(2)}</div>
-                            </div>
-                            <div class="dash-card">
-                                <div class="title">Despesas</div>
-                                <div class="value" style="font-size:0.95rem; color: var(--danger-red);">R$ ${despesas.toFixed(2)}</div>
-                            </div>
-                            <div class="dash-card">
-                                <div class="title">Saldo</div>
-                                <div class="value" style="font-size:0.95rem; color: ${saldo >= 0 ? 'var(--success-green)' : 'var(--danger-red)'};">R$ ${saldo.toFixed(2)}</div>
-                            </div>
+                        <!-- PAINEL FINANCEIRO DA FESTA -->
+                        <div class="dashboard-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 14px;">
+                            <div class="dash-card"><div class="title">Arrecadado</div><div class="value" style="font-size:0.95rem;">R$ ${arrecadado.toFixed(2)}</div></div>
+                            <div class="dash-card"><div class="title">Despesas</div><div class="value" style="font-size:0.95rem; color:#ef4444;">R$ ${despesas.toFixed(2)}</div></div>
+                            <div class="dash-card"><div class="title">Saldo</div><div class="value" style="font-size:0.95rem; color:${saldo >= 0 ? '#10b981' : '#ef4444'};">R$ ${saldo.toFixed(2)}</div></div>
                         </div>
 
-                        <div style="background:#f9fbf9; border:1px solid #e0efe0; padding: 10px; border-radius:6px; margin-top: 8px; margin-bottom: 8px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
-                                <strong style="font-size:0.85rem; color: var(--primary-green-dark);">📋 Convidados (${(festa.presencas || []).length} — R$ 35,00)</strong>
+                        <!-- LISTA DE PRESENÇA DA FESTA — PADRÃO LIVRO DE VISITAS -->
+                        <div style="background:#ffffff; border:1px solid #e2e8f0; padding: 14px; border-radius:12px; margin-bottom: 10px;">
+                            <div class="card-title" style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px;">
+                                <span>📋 Lista de Presença</span>
+                                <span class="badge badge-green" style="font-size:0.85rem;">${(festa.presencas || []).length} Presentes</span>
                             </div>
-                            ${(festa.presencas || []).length > 0 ? `
-                                <div class="table-responsive">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th style="padding:4px;">#</th>
-                                                <th style="padding:4px;">Nome</th>
-                                                <th style="padding:4px;">Tel</th>
-                                                <th style="padding:4px; text-align:right;">Ação</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>${presencasHtml}</tbody>
-                                    </table>
+                            <form class="form-grid" style="margin-bottom:14px; align-items:end;" onsubmit="adicionarPresencaFesta(event, ${festa.id})">
+                                <div class="form-group">
+                                    <label>Nome do Visitante / Convidado *</label>
+                                    <input type="text" name="nome" class="form-control" required placeholder="Ex: Maria da Silva">
                                 </div>
-                            ` : '<span style="font-size:0.8rem; color:#888;">Nenhum convidado confirmado ainda.</span>'}
+                                <div class="form-group">
+                                    <label>Telefone para Contato</label>
+                                    <input type="tel" name="tel" class="form-control" placeholder="(11) 91234-5678" inputmode="tel" oninput="formatarTelefoneBR(this)" maxlength="15" autocomplete="tel">
+                                </div>
+                                <div class="form-group" style="justify-content:flex-end;">
+                                    <button type="submit" class="btn btn-primary">✍️ Confirmar Presença</button>
+                                </div>
+                            </form>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nome do Visitante</th>
+                                            <th>Telefone</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${presencasHtml || '<tr><td colspan="4" style="text-align:center; color:#64748b;">Nenhum participante registrado neste evento.</td></tr>'}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
-                        <div style="background:#fcfcfc; border:1px solid #eee; padding: 10px; border-radius:6px;">
+                        <!-- DESPESAS DA FESTA -->
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding: 12px; border-radius:12px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
-                                <strong style="font-size:0.85rem;">💸 Despesas</strong>
+                                <strong>💸 Despesas do Evento</strong>
                                 <button class="btn btn-primary btn-sm" onclick="adicionarDespesaFesta(${festa.id})">+ Despesa</button>
                             </div>
-                            <div>${lancamentosHtml || '<span style="font-size:0.8rem; color:#888;">Nenhuma despesa cadastrada.</span>'}</div>
+                            <div>${lancamentosHtml || '<span style="font-size:0.8rem; color:#64748b;">Nenhuma despesa registrada.</span>'}</div>
                         </div>
                     </div>
                 `;
             });
 
-            const dashArrecadado = document.getElementById('dashFestaArrecadado');
-            if (dashArrecadado) {
-                dashArrecadado.innerText = `R$ ${totalArrecadado.toFixed(2)}`;
-                dashArrecadado.style.color = 'var(--accent-orange)';
-            }
+            document.getElementById('dashFestaArrecadado').innerText = `R$ ${totalArrecadado.toFixed(2)}`;
             document.getElementById('dashFestaCustos').innerText = `R$ ${totalCustos.toFixed(2)}`;
             const saldoGeral = totalArrecadado - totalCustos;
             const elSaldo = document.getElementById('dashFestaSaldo');
             elSaldo.innerText = `R$ ${saldoGeral.toFixed(2)}`;
-            elSaldo.style.color = saldoGeral >= 0 ? 'var(--success-green)' : 'var(--danger-red)';
+            elSaldo.style.color = saldoGeral >= 0 ? '#10b981' : '#ef4444';
         }
 
-        /* --- LÓGICA: FILHOS DE SANTO --- */
         function salvarFilho(e) {
             e.preventDefault();
             const idEdit = document.getElementById('fIdEdit').value;
@@ -1974,19 +2198,9 @@
 
             if (idEdit) {
                 const filho = appState.filhos.find(x => x.id == idEdit);
-                if (filho) {
-                    filho.nome = nome;
-                    filho.tel = tel;
-                    filho.aniversario = aniversario;
-                }
+                if (filho) { filho.nome = nome; filho.tel = tel; filho.aniversario = aniversario; }
             } else {
-                appState.filhos.push({
-                    id: Date.now(),
-                    nome: nome,
-                    tel: tel,
-                    aniversario: aniversario,
-                    valor: 50
-                });
+                appState.filhos.push({ id: Date.now(), nome: nome, tel: tel, aniversario: aniversario, valor: 50 });
             }
 
             cancelarEdicaoFilho();
@@ -1996,19 +2210,14 @@
         function editarFilho(id) {
             const filho = appState.filhos.find(x => x.id === id);
             if (!filho) return;
-
             document.getElementById('fIdEdit').value = filho.id;
             document.getElementById('fNome').value = filho.nome || '';
             document.getElementById('fTel').value = filho.tel || '';
             document.getElementById('fAniversario').value = filho.aniversario || '';
-
             document.getElementById('tituloFormFilho').innerText = 'Editar Filho de Santo';
-            document.getElementById('btnSalvarFilho').innerText = '✏️ Atualizar Filho';
-            document.getElementById('btnSalvarFilho').classList.remove('btn-primary');
-            document.getElementById('btnSalvarFilho').classList.add('btn-orange');
+            document.getElementById('btnSalvarFilho').innerText = '✏️ Atualizar';
             document.getElementById('btnCancelarEditFilho').style.display = 'inline-flex';
-
-            document.getElementById('formFilho').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('formFilho').scrollIntoView({ behavior: 'smooth' });
         }
 
         function cancelarEdicaoFilho() {
@@ -2016,20 +2225,15 @@
             document.getElementById('fNome').value = '';
             document.getElementById('fTel').value = '';
             document.getElementById('fAniversario').value = '';
-
             document.getElementById('tituloFormFilho').innerText = 'Cadastrar Filho de Santo';
-            document.getElementById('btnSalvarFilho').innerText = 'Cadastrar Filho';
-            document.getElementById('btnSalvarFilho').classList.remove('btn-orange');
-            document.getElementById('btnSalvarFilho').classList.add('btn-primary');
+            document.getElementById('btnSalvarFilho').innerText = 'Salvar Filho';
             document.getElementById('btnCancelarEditFilho').style.display = 'none';
         }
 
         function removerFilho(id) {
-            if(confirm("Remover este filho de santo da lista?")) {
+            if(confirm("Remover este filho de santo?")) {
                 appState.filhos = appState.filhos.filter(x => x.id !== id);
-                if (document.getElementById('fIdEdit').value == id) {
-                    cancelarEdicaoFilho();
-                }
+                if (document.getElementById('fIdEdit').value == id) cancelarEdicaoFilho();
                 saveData();
             }
         }
@@ -2037,9 +2241,8 @@
         function renderFilhos() {
             const tbody = document.getElementById('tblFilhos');
             tbody.innerHTML = '';
-            
             if(appState.filhos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum filho de santo cadastrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b;">Nenhum filho cadastrado.</td></tr>';
                 return;
             }
 
@@ -2049,7 +2252,6 @@
                     const partes = anivDisplay.split('-');
                     if(partes.length === 3) anivDisplay = `${partes[2]}/${partes[1]}`;
                 }
-
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${f.nome}</strong></td>
@@ -2057,14 +2259,13 @@
                         <td>🎂 ${anivDisplay}</td>
                         <td>
                             <button class="btn btn-orange btn-sm" onclick="editarFilho(${f.id})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="removerFilho(${f.id})">Excluir</button>
+                            <button class="btn btn-danger btn-sm" onclick="removerFilho(${f.id})" style="margin-left: 4px;">Excluir</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        /* --- LÓGICA: MENSALIDADES --- */
         function irParaMesAtual() {
             const hoje = new Date();
             const ano = hoje.getFullYear();
@@ -2073,9 +2274,7 @@
             renderMensalidades();
         }
 
-        function aoMudarMesSelect() {
-            renderMensalidades();
-        }
+        function aoMudarMesSelect() { renderMensalidades(); }
 
         function navegarMes(delta) {
             const val = document.getElementById('mesRefSelect').value;
@@ -2083,40 +2282,20 @@
             const [anoStr, mesStr] = val.split('-');
             let ano = parseInt(anoStr);
             let mes = parseInt(mesStr) + delta;
-
-            if (mes > 12) {
-                mes = 1;
-                ano++;
-            } else if (mes < 1) {
-                mes = 12;
-                ano--;
-            }
-
-            const mFmt = String(mes).padStart(2, '0');
-            document.getElementById('mesRefSelect').value = `${ano}-${mFmt}`;
+            if (mes > 12) { mes = 1; ano++; } else if (mes < 1) { mes = 12; ano--; }
+            document.getElementById('mesRefSelect').value = `${ano}-${String(mes).padStart(2, '0')}`;
             renderMensalidades();
         }
 
         function atualizarValorMensalidadeFilho(filhoId, novoValor) {
-            const valorNum = parseFloat(novoValor) || 0;
             const filho = appState.filhos.find(f => f.id == filhoId);
-            if (filho) {
-                filho.valor = valorNum;
-                saveData();
-            }
+            if (filho) { filho.valor = parseFloat(novoValor) || 0; saveData(); }
         }
 
         function alterarStatusMensalidadeSelect(filhoId, mesChave, statusNovo) {
-            if(!appState.mensalidades[mesChave]) {
-                appState.mensalidades[mesChave] = {};
-            }
-
+            if(!appState.mensalidades[mesChave]) appState.mensalidades[mesChave] = {};
             if(statusNovo === 'pago') {
-                const hojeStr = new Date().toISOString().substring(0,10);
-                appState.mensalidades[mesChave][filhoId] = {
-                    pago: true,
-                    dataPagamento: hojeStr
-                };
+                appState.mensalidades[mesChave][filhoId] = { pago: true, dataPagamento: new Date().toISOString().substring(0,10) };
             } else {
                 delete appState.mensalidades[mesChave][filhoId];
             }
@@ -2133,80 +2312,55 @@
         function renderMensalidades() {
             const mesChave = document.getElementById('mesRefSelect').value;
             if(!mesChave) return;
-
             const [anoStr, mesStr] = mesChave.split('-');
-            const numMes = parseInt(mesStr);
-            const nomeMesExtenso = NOMES_MESES[numMes - 1];
-
-            document.getElementById('lblMesSelecionadoNome').innerText = `${nomeMesExtenso} de ${anoStr}`;
-
+            document.getElementById('lblMesSelecionadoNome').innerText = `${NOMES_MESES[parseInt(mesStr) - 1]} de ${anoStr}`;
             const tbodyUnificado = document.getElementById('tblMensalidadesUnificada');
             tbodyUnificado.innerHTML = '';
-
             const statusMesAtivo = appState.mensalidades[mesChave] || {};
 
-            let totalPrevisto = 0;
-            let totalRecebido = 0;
-            let totalPendente = 0;
+            let totalPrevisto = 0, totalRecebido = 0, totalPendente = 0;
 
-            if(appState.filhos.length === 0) {
-                tbodyUnificado.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Nenhum filho de santo cadastrado. Cadastre os filhos na aba "Filhos de Santo".</td></tr>';
-            } else {
-                appState.filhos.forEach(f => {
-                    const reg = statusMesAtivo[f.id];
-                    const estaPago = typeof reg === 'object' ? reg.pago : !!reg;
-                    const valorMensal = f.valor !== undefined ? f.valor : 50;
-                    const consumoCantina = calcularConsumoCantinaFilho(f.nome);
-                    const totalAPagar = valorMensal + consumoCantina;
-                    
-                    totalPrevisto += totalAPagar;
-                    if (estaPago) {
-                        totalRecebido += totalAPagar;
-                    } else {
-                        totalPendente += totalAPagar;
-                    }
+            appState.filhos.forEach(f => {
+                const reg = statusMesAtivo[f.id];
+                const estaPago = typeof reg === 'object' ? reg.pago : !!reg;
+                const valorMensal = f.valor !== undefined ? f.valor : 50;
+                const consumoCantina = calcularConsumoCantinaFilho(f.nome);
+                const totalAPagar = valorMensal + consumoCantina;
+                
+                totalPrevisto += totalAPagar;
+                if (estaPago) totalRecebido += totalAPagar; else totalPendente += totalAPagar;
 
-                    tbodyUnificado.innerHTML += `
-                        <tr>
-                            <td><strong>${f.nome}</strong></td>
-                            <td>${f.tel || '-'}</td>
-                            <td>
-                                <input type="number" class="form-control" style="width: 85px; padding: 4px 6px; font-weight: bold;" value="${valorMensal}" step="0.01" min="0" onchange="atualizarValorMensalidadeFilho(${f.id}, this.value)" inputmode="numeric">
-                            </td>
-                            <td><span style="color: ${consumoCantina > 0 ? 'var(--danger-red)' : 'var(--text-muted)'}; font-weight: bold;">R$ ${consumoCantina.toFixed(2)}</span></td>
-                            <td><strong style="color: var(--primary-green-dark);">R$ ${totalAPagar.toFixed(2)}</strong></td>
-                            <td>
-                                <select class="select-status-pago ${estaPago ? 'pago' : 'pendente'}" onchange="alterarStatusMensalidadeSelect(${f.id}, '${mesChave}', this.value)">
-                                    <option value="pago" ${estaPago ? 'selected' : ''}>✅ Pago</option>
-                                    <option value="pendente" ${!estaPago ? 'selected' : ''}>⏳ Pendente</option>
-                                </select>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
+                tbodyUnificado.innerHTML += `
+                    <tr>
+                        <td><strong>${f.nome}</strong></td>
+                        <td>${f.tel || '-'}</td>
+                        <td><input type="number" class="form-control" style="width: 85px; padding: 4px 6px; font-weight: bold;" value="${valorMensal}" step="0.01" min="0" onchange="atualizarValorMensalidadeFilho(${f.id}, this.value)" inputmode="numeric"></td>
+                        <td><span style="color: ${consumoCantina > 0 ? '#ef4444' : '#64748b'}; font-weight: bold;">R$ ${consumoCantina.toFixed(2)}</span></td>
+                        <td><strong style="color: var(--primary-green);">R$ ${totalAPagar.toFixed(2)}</strong></td>
+                        <td>
+                            <select class="select-status-pago ${estaPago ? 'pago' : 'pendente'}" onchange="alterarStatusMensalidadeSelect(${f.id}, '${mesChave}', this.value)">
+                                <option value="pago" ${estaPago ? 'selected' : ''}>✅ Pago</option>
+                                <option value="pendente" ${!estaPago ? 'selected' : ''}>⏳ Pendente</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
 
             document.getElementById('dashMensalidadePrevisto').innerText = `R$ ${totalPrevisto.toFixed(2)}`;
             document.getElementById('dashMensalidadeRecebido').innerText = `R$ ${totalRecebido.toFixed(2)}`;
             document.getElementById('dashMensalidadePendente').innerText = `R$ ${totalPendente.toFixed(2)}`;
         }
 
-        /* --- LÓGICA: ESTOQUE --- */
         function adicionarItemEstoque(e) {
             e.preventDefault();
-            const nome = document.getElementById('eNome').value;
-            const categoria = document.getElementById('eCategoria').value;
-            const qtd = parseInt(document.getElementById('eQtd').value) || 0;
-
             appState.estoque.push({
                 id: Date.now(),
-                nome: nome,
-                categoria: categoria,
-                qtd: qtd
+                nome: document.getElementById('eNome').value,
+                categoria: document.getElementById('eCategoria').value,
+                qtd: parseInt(document.getElementById('eQtd').value) || 0
             });
-
             document.getElementById('eNome').value = '';
-            document.getElementById('eQtd').value = '10';
             saveData();
         }
 
@@ -2219,39 +2373,28 @@
 
         function alterarQtdEstoque(id, delta) {
             const item = appState.estoque.find(x => x.id === id);
-            if(item) {
-                item.qtd = Math.max(0, item.qtd + delta);
-                saveData();
-            }
+            if(item) { item.qtd = Math.max(0, item.qtd + delta); saveData(); }
         }
 
         function removerItemEstoque(id) {
-            if(confirm("Deseja realmente apagar este item do estoque?")) {
-                appState.estoque = appState.estoque.filter(x => x.id !== id);
-                saveData();
-            }
+            if(confirm("Apagar item?")) { appState.estoque = appState.estoque.filter(x => x.id !== id); saveData(); }
         }
 
         function renderEstoque() {
             const tbody = document.getElementById('tblEstoque');
             tbody.innerHTML = '';
-
-            let itensFiltrados = appState.estoque;
-            if (filtroEstoqueCategoria !== 'Todos') {
-                itensFiltrados = appState.estoque.filter(i => (i.categoria || 'Outros') === filtroEstoqueCategoria);
-            }
+            let itensFiltrados = filtroEstoqueCategoria === 'Todos' ? appState.estoque : appState.estoque.filter(i => (i.categoria || 'Outros') === filtroEstoqueCategoria);
 
             if (itensFiltrados.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Nenhum item encontrado nesta categoria.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b;">Nenhum item.</td></tr>';
                 return;
             }
 
             itensFiltrados.forEach(i => {
-                const cat = i.categoria || 'Outros';
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${i.nome}</strong></td>
-                        <td><span class="badge badge-orange">${cat}</span></td>
+                        <td><span class="badge badge-orange">${i.categoria || 'Outros'}</span></td>
                         <td><strong>${i.qtd}</strong> un</td>
                         <td>
                             <button class="btn btn-secondary btn-sm" onclick="alterarQtdEstoque(${i.id}, -1)">-</button>
@@ -2263,7 +2406,6 @@
             });
         }
 
-        /* --- LÓGICA: CANTINA DA VÓ --- */
         function popularSelectProdutosCantina() {
             const select = document.getElementById('cantinaProduto');
             if(!select) return;
@@ -2278,124 +2420,64 @@
             if(!select) return;
             const valAtual = select.value;
             select.innerHTML = '<option value="">-- Selecione o Filho --</option>';
-            appState.filhos.forEach(f => {
-                select.innerHTML += `<option value="${f.id}">${f.nome}</option>`;
-            });
+            appState.filhos.forEach(f => { select.innerHTML += `<option value="${f.id}">${f.nome}</option>`; });
             if(valAtual) select.value = valAtual;
         }
 
         function mudarTipoCompradorCantina() {
             const tipo = document.getElementById('cantinaTipoComprador').value;
-            const grpFilho = document.getElementById('grupoFilhoSelect');
-            const grpConsulente = document.getElementById('grupoConsulenteInput');
-
-            if(tipo === 'Filho') {
-                grpFilho.style.display = 'flex';
-                grpConsulente.style.display = 'none';
-                document.getElementById('cantinaFilhoId').setAttribute('required', 'required');
-                document.getElementById('cantinaNomeConsulente').removeAttribute('required');
-            } else {
-                grpFilho.style.display = 'none';
-                grpConsulente.style.display = 'flex';
-                document.getElementById('cantinaFilhoId').removeAttribute('required');
-                document.getElementById('cantinaNomeConsulente').setAttribute('required', 'required');
-            }
+            document.getElementById('grupoFilhoSelect').style.display = tipo === 'Filho' ? 'flex' : 'none';
+            document.getElementById('grupoConsulenteInput').style.display = tipo === 'Filho' ? 'none' : 'flex';
         }
 
         function atualizarPrecoProdutoCantina() {
             const idxProd = document.getElementById('cantinaProduto').value;
             const qtd = parseInt(document.getElementById('cantinaQtd').value) || 1;
-            const txtTotal = document.getElementById('cantinaValorTotal');
-
-            if(idxProd !== '') {
-                const produto = PRODUTOS_CANTINA[idxProd];
-                const total = produto.preco * qtd;
-                txtTotal.value = `R$ ${total.toFixed(2)}`;
-            } else {
-                txtTotal.value = 'R$ 0,00';
-            }
+            document.getElementById('cantinaValorTotal').value = idxProd !== '' ? `R$ ${(PRODUTOS_CANTINA[idxProd].preco * qtd).toFixed(2)}` : 'R$ 0,00';
         }
 
         function registrarVendaCantina(e) {
             e.preventDefault();
             const tipoComprador = document.getElementById('cantinaTipoComprador').value;
-            let nomeComprador = '';
-
-            if(tipoComprador === 'Filho') {
-                const filhoId = document.getElementById('cantinaFilhoId').value;
-                const filho = appState.filhos.find(f => f.id == filhoId);
-                if(!filho) {
-                    alert("Selecione um Filho de Santo válido!");
-                    return;
-                }
-                nomeComprador = `[Filho] ${filho.nome}`;
-            } else {
-                nomeComprador = `[Consulente] ${document.getElementById('cantinaNomeConsulente').value}`;
-            }
-
-            const idxProd = document.getElementById('cantinaProduto').value;
-            if(idxProd === '') {
-                alert("Selecione um produto!");
-                return;
-            }
-
-            const produto = PRODUTOS_CANTINA[idxProd];
+            let nomeComprador = tipoComprador === 'Filho' ? `[Filho] ${appState.filhos.find(f => f.id == document.getElementById('cantinaFilhoId').value)?.nome || ''}` : `[Consulente] ${document.getElementById('cantinaNomeConsulente').value}`;
+            const produto = PRODUTOS_CANTINA[document.getElementById('cantinaProduto').value];
             const qtd = parseInt(document.getElementById('cantinaQtd').value) || 1;
-            const valorTotal = produto.preco * qtd;
-            const statusPgto = document.getElementById('cantinaStatusPgto').value;
 
-            const novaVenda = {
+            appState.cantinaVendas.push({
                 id: Date.now(),
                 dataHora: new Date().toLocaleString('pt-BR'),
                 comprador: nomeComprador,
                 produto: produto.nome,
                 qtd: qtd,
-                total: valorTotal,
-                status: statusPgto
-            };
-
-            appState.cantinaVendas.push(novaVenda);
+                total: produto.preco * qtd,
+                status: document.getElementById('cantinaStatusPgto').value
+            });
 
             document.getElementById('cantinaQtd').value = '1';
             document.getElementById('cantinaProduto').value = '';
             document.getElementById('cantinaValorTotal').value = 'R$ 0,00';
-            document.getElementById('cantinaNomeConsulente').value = '';
-
             saveData();
         }
 
         function alternarStatusVendaCantina(id) {
             const venda = appState.cantinaVendas.find(v => v.id === id);
-            if(venda) {
-                venda.status = venda.status === 'Pago' ? 'Fiado' : 'Pago';
-                saveData();
-            }
+            if(venda) { venda.status = venda.status === 'Pago' ? 'Fiado' : 'Pago'; saveData(); }
         }
 
         function removerVendaCantina(id) {
-            if(confirm("Deseja realmente excluir este registro de venda da cantina?")) {
-                appState.cantinaVendas = appState.cantinaVendas.filter(v => v.id !== id);
-                saveData();
-            }
+            if(confirm("Excluir venda?")) { appState.cantinaVendas = appState.cantinaVendas.filter(v => v.id !== id); saveData(); }
         }
 
         function renderCantina() {
             const tbody = document.getElementById('tblCantinaVendas');
             tbody.innerHTML = '';
-
-            let totalRecebido = 0;
-            let totalFiado = 0;
+            let totalRecebido = 0, totalFiado = 0;
 
             if(appState.cantinaVendas.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">Nenhuma venda registrada na cantina ainda.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b;">Nenhuma venda.</td></tr>';
             } else {
                 appState.cantinaVendas.forEach(v => {
-                    if(v.status === 'Pago') {
-                        totalRecebido += v.total;
-                    } else {
-                        totalFiado += v.total;
-                    }
-
+                    if(v.status === 'Pago') totalRecebido += v.total; else totalFiado += v.total;
                     tbody.innerHTML += `
                         <tr>
                             <td><small>${v.dataHora}</small></td>
@@ -2403,14 +2485,8 @@
                             <td>${v.produto}</td>
                             <td>${v.qtd}x</td>
                             <td><strong>R$ ${v.total.toFixed(2)}</strong></td>
-                            <td>
-                                <span class="badge ${v.status === 'Pago' ? 'badge-green' : 'badge-red'}" style="cursor:pointer;" onclick="alternarStatusVendaCantina(${v.id})" title="Clique para alterar o status">
-                                    ${v.status === 'Pago' ? '✅ Pago' : '⏳ Fiado'}
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" onclick="removerVendaCantina(${v.id})">Excluir</button>
-                            </td>
+                            <td><span class="badge ${v.status === 'Pago' ? 'badge-green' : 'badge-red'}" style="cursor:pointer;" onclick="alternarStatusVendaCantina(${v.id})">${v.status === 'Pago' ? '✅ Pago' : '⏳ Fiado'}</span></td>
+                            <td><button class="btn btn-danger btn-sm" onclick="removerVendaCantina(${v.id})">Excluir</button></td>
                         </tr>
                     `;
                 });
@@ -2418,24 +2494,162 @@
 
             document.getElementById('dashCantinaRecebido').innerText = `R$ ${totalRecebido.toFixed(2)}`;
             document.getElementById('dashCantinaFiado').innerText = `R$ ${totalFiado.toFixed(2)}`;
-            const faturamentoTotal = totalRecebido + totalFiado;
-            document.getElementById('dashCantinaTotal').innerText = `R$ ${faturamentoTotal.toFixed(2)}`;
+            document.getElementById('dashCantinaTotal').innerText = `R$ ${(totalRecebido + totalFiado).toFixed(2)}`;
         }
 
-        /* --- BACKUP & RESTAURAÇÃO --- */
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+        /* --- MODAL DE EXPORTAÇÃO SIMPLIFICADO --- */
+        function abrirModalExportar() { document.getElementById('modalExportar').style.display = 'flex'; }
+        function fecharModalExportar() { document.getElementById('modalExportar').style.display = 'none'; }
+
+        function exportDataJSON() {
+            fecharModalExportar();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
             const dlAnchor = document.createElement('a');
             dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `GestaoAxe_Backup_${new Date().toISOString().substring(0,10)}.json`);
+            dlAnchor.setAttribute("download", `GestaoTenda_Backup_${new Date().toISOString().substring(0,10)}.json`);
             document.body.appendChild(dlAnchor);
             dlAnchor.click();
             dlAnchor.remove();
         }
 
-        function importData() {
-            document.getElementById('fileInput').click();
+        function exportarExcelComAbas() {
+            fecharModalExportar();
+
+            function sanitize(val) {
+                if (val === undefined || val === null) return '';
+                return String(val)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function buildRow(cells) {
+                return '<Row>' + cells.map(c => `<Cell><Data ss:Type="String">${sanitize(c)}</Data></Cell>`).join('') + '</Row>\n';
+            }
+
+            function buildTable(headers, rows) {
+                let xml = '<Table>\n';
+                xml += buildRow(headers);
+                rows.forEach(r => { xml += buildRow(r); });
+                xml += '</Table>\n';
+                return xml;
+            }
+
+            const headersGiras = ["ID Gira", "Data", "Horário", "Nome / Linha", "Total Presentes"];
+            const rowsGiras = (appState.girasSemanais || []).map(g => [
+                g.id,
+                g.data ? g.data.split('-').reverse().join('/') : '',
+                g.hora || '',
+                g.nome || '',
+                (appState.consulentes || []).filter(c => c.giraId == g.id).length
+            ]);
+
+            const headersVisitantes = ["ID Registro", "ID Gira", "Gira Nome/Data", "Nome do Visitante", "Telefone"];
+            const rowsVisitantes = (appState.consulentes || []).map(c => {
+                const gRef = (appState.girasSemanais || []).find(g => g.id == c.giraId);
+                const gLabel = gRef ? `${gRef.nome} (${gRef.data})` : c.giraId;
+                return [c.id, c.giraId, gLabel, c.nome || '', c.tel || ''];
+            });
+
+            const headersFestas = ["ID Festa", "Nome do Evento", "Orixá / Entidade", "Data", "Horário", "Convidados Presentes", "Total Despesas (R$)"];
+            const rowsFestas = (appState.festas || []).map(f => [
+                f.id,
+                f.nome || '',
+                f.orixa || '',
+                f.data ? f.data.split('-').reverse().join('/') : '',
+                f.hora || '',
+                (f.presencas || []).length,
+                (f.lancamentos || []).reduce((s, l) => s + (l.valor || 0), 0).toFixed(2)
+            ]);
+
+            const headersFilhos = ["ID Filho", "Nome Completo", "Telefone", "Aniversário", "Mensalidade Padrão (R$)"];
+            const rowsFilhos = (appState.filhos || []).map(f => [
+                f.id,
+                f.nome || '',
+                f.tel || '',
+                f.aniversario || '',
+                (f.valor !== undefined ? f.valor : 50).toFixed(2)
+            ]);
+
+            const headersMensalidades = ["Mês Referência", "Filho de Santo", "Valor Mensalidade (R$)", "Consumo Cantina (R$)", "Total a Pagar (R$)", "Status Pago"];
+            const rowsMensalidades = [];
+            Object.keys(appState.mensalidades || {}).forEach(mesChave => {
+                const mesMap = appState.mensalidades[mesChave];
+                (appState.filhos || []).forEach(f => {
+                    const reg = mesMap[f.id];
+                    const estaPago = typeof reg === 'object' ? reg.pago : !!reg;
+                    const valM = f.valor !== undefined ? f.valor : 50;
+                    const valC = (appState.cantinaVendas || [])
+                        .filter(v => v.comprador === `[Filho] ${f.nome}` && v.status === 'Fiado')
+                        .reduce((s, v) => s + (v.total || 0), 0);
+                    rowsMensalidades.push([
+                        mesChave,
+                        f.nome,
+                        valM.toFixed(2),
+                        valC.toFixed(2),
+                        (valM + valC).toFixed(2),
+                        estaPago ? "Pago" : "Pendente"
+                    ]);
+                });
+            });
+
+            const headersEstoque = ["ID Item", "Material / Insumo", "Categoria", "Quantidade Atual"];
+            const rowsEstoque = (appState.estoque || []).map(i => [
+                i.id,
+                i.nome || '',
+                i.categoria || 'Outros',
+                i.qtd || 0
+            ]);
+
+            const headersCantina = ["ID Venda", "Data e Hora", "Comprador", "Produto", "Quantidade", "Total (R$)", "Forma / Status"];
+            const rowsCantina = (appState.cantinaVendas || []).map(v => [
+                v.id,
+                v.dataHora || '',
+                v.comprador || '',
+                v.produto || '',
+                v.qtd || 1,
+                (v.total || 0).toFixed(2),
+                v.status || ''
+            ]);
+
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+`;
+
+            const abaConfigs = [
+                { name: "Giras", headers: headersGiras, rows: rowsGiras },
+                { name: "Lista de Visitantes", headers: headersVisitantes, rows: rowsVisitantes },
+                { name: "Festas", headers: headersFestas, rows: rowsFestas },
+                { name: "Filhos de Santo", headers: headersFilhos, rows: rowsFilhos },
+                { name: "Mensalidades", headers: headersMensalidades, rows: rowsMensalidades },
+                { name: "Estoque", headers: headersEstoque, rows: rowsEstoque },
+                { name: "Cantina da Vo", headers: headersCantina, rows: rowsCantina }
+            ];
+
+            abaConfigs.forEach(aba => {
+                xml += `<Worksheet ss:Name="${aba.name}">\n`;
+                xml += buildTable(aba.headers, aba.rows);
+                xml += `</Worksheet>\n`;
+            });
+
+            xml += `</Workbook>`;
+
+            const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8" });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `GestaoDaTenda_RelatorioCompleto_${new Date().toISOString().substring(0,10)}.xls`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
+
+        function importData() { document.getElementById('fileInput').click(); }
 
         function handleFileSelect(event) {
             const reader = new FileReader();
@@ -2444,20 +2658,10 @@
                     const imported = JSON.parse(e.target.result);
                     if(imported && typeof imported === 'object') {
                         appState = imported;
-                        if (!appState.girasSemanais) appState.girasSemanais = [];
-                        if (!appState.filhos && imported.filhas) appState.filhos = imported.filhas;
-                        if (!appState.filhos) appState.filhos = [];
-                        if (!appState.consulentes) appState.consulentes = [];
-                        if (!appState.mensalidades) appState.mensalidades = {};
-                        if (!appState.estoque) appState.estoque = [];
-                        if (!appState.festas) appState.festas = [];
-                        if (!appState.cantinaVendas) appState.cantinaVendas = [];
                         saveData();
-                        alert("Backup restaurado com sucesso na nuvem!");
+                        alert("Backup restaurado com sucesso!");
                     }
-                } catch(err) {
-                    alert("Erro ao ler o arquivo de backup.");
-                }
+                } catch(err) { alert("Erro ao ler arquivo de backup."); }
                 event.target.value = '';
             };
             reader.readAsText(event.target.files[0]);
