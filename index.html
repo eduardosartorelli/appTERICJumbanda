@@ -57,14 +57,45 @@
             padding: 15px;
         }
 
+        /* Faixa superior verde e laranja, sempre acompanhando a largura do cartão */
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 7px;
+            background: linear-gradient(
+                90deg,
+                #1b5e20 0%,
+                #43a047 28%,
+                #a5d6a7 48%,
+                #ffb74d 72%,
+                #ef6c00 100%
+            );
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 2px 14px rgba(239, 108, 0, 0.18);
+            pointer-events: none;
+        }
+
         .login-card {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.88) 0%,
+                    rgba(232, 245, 233, 0.78) 58%,
+                    rgba(255, 243, 224, 0.72) 100%);
+            backdrop-filter: blur(22px) saturate(135%);
+            -webkit-backdrop-filter: blur(22px) saturate(135%);
             padding: 40px 30px;
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.58);
+            box-shadow:
+                0 20px 45px rgba(13, 40, 24, 0.24),
+                0 5px 18px rgba(245, 124, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.72);
             text-align: center;
             width: 100%;
             max-width: 400px;
